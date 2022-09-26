@@ -1,0 +1,11 @@
+{
+	"authors": [
+		"jordan4ibanez",
+        "lo-th"
+	],
+	"copyright": "Copyright © 2022, jordan4ibanez & lo-th",
+	"description": "JavaScript 3D physics engine.",
+	"license": "MIT",
+	"name": "oimo",
+    "homepage": "http://lo-th.github.io/Oimo.js/"
+}
