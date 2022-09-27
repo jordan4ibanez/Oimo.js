@@ -1,77 +1,78 @@
-import { _Math } from '../../../math/Math';
-import { Mat33 } from '../../../math/Mat33';
+module constraint.joint.base.linear_constraint;
+
+import math.math;
+import math.mat33;
 
 /**
 * A linear constraint for all axes for various joints.
 * @author saharan
 */
-function LinearConstraint ( joint ){
+public class LinearConstraint {
+    
+    float m1;
+    float m2;
 
-    this.m1=NaN;
-    this.m2=NaN;
+    float r1x;
+    float r1y;
+    float r1z;
 
-    this.ii1 = null;
-    this.ii2 = null;
-    this.dd = null;
+    float r2x;
+    float r2y;
+    float r2z;
 
-    this.r1x=NaN;
-    this.r1y=NaN;
-    this.r1z=NaN;
+    float ax1x;
+    float ax1y;
+    float ax1z;
+    float ay1x;
+    float ay1y;
+    float ay1z;
+    float az1x;
+    float az1y;
+    float az1z;
 
-    this.r2x=NaN;
-    this.r2y=NaN;
-    this.r2z=NaN;
+    float ax2x;
+    float ax2y;
+    float ax2z;
+    float ay2x;
+    float ay2y;
+    float ay2z;
+    float az2x;
+    float az2y;
+    float az2z;
 
-    this.ax1x=NaN;
-    this.ax1y=NaN;
-    this.ax1z=NaN;
-    this.ay1x=NaN;
-    this.ay1y=NaN;
-    this.ay1z=NaN;
-    this.az1x=NaN;
-    this.az1y=NaN;
-    this.az1z=NaN;
+    float vel;
+    float velx;
+    float vely;
+    float velz;
 
-    this.ax2x=NaN;
-    this.ax2y=NaN;
-    this.ax2z=NaN;
-    this.ay2x=NaN;
-    this.ay2y=NaN;
-    this.ay2z=NaN;
-    this.az2x=NaN;
-    this.az2y=NaN;
-    this.az2z=NaN;
+    float ii1 = null;
+    float ii2 = null;
+    float dd = null;
 
-    this.vel=NaN;
-    this.velx=NaN;
-    this.vely=NaN;
-    this.velz=NaN;
+    float impx = 0;
+    float impy = 0;
+    float impz = 0;
+
+    this ( Joint joint ){
+        this.joint = joint;
+        this.r1 = joint.relativeAnchorPoint1;
+        this.r2 = joint.relativeAnchorPoint2;
+        this.p1 = joint.anchorPoint1;
+        this.p2 = joint.anchorPoint2;
+        this.b1 = joint.body1;
+        this.b2 = joint.body2;
+        this.l1 = this.b1.linearVelocity;
+        this.l2 = this.b2.linearVelocity;
+        this.a1 = this.b1.angularVelocity;
+        this.a2 = this.b2.angularVelocity;
+        this.i1 = this.b1.inverseInertia;
+        this.i2 = this.b2.inverseInertia;
+        
+
+    }
 
 
-    this.joint = joint;
-    this.r1 = joint.relativeAnchorPoint1;
-    this.r2 = joint.relativeAnchorPoint2;
-    this.p1 = joint.anchorPoint1;
-    this.p2 = joint.anchorPoint2;
-    this.b1 = joint.body1;
-    this.b2 = joint.body2;
-    this.l1 = this.b1.linearVelocity;
-    this.l2 = this.b2.linearVelocity;
-    this.a1 = this.b1.angularVelocity;
-    this.a2 = this.b2.angularVelocity;
-    this.i1 = this.b1.inverseInertia;
-    this.i2 = this.b2.inverseInertia;
-    this.impx = 0;
-    this.impy = 0;
-    this.impz = 0;
-
-}
-
-Object.assign( LinearConstraint.prototype, {
-
-    LinearConstraint: true,
-
-    preSolve: function ( timeStep, invTimeStep ) {
+    void preSolve ( float timeStep, float invTimeStep ) {
         
         this.r1x = this.r1.x;
         this.r1y = this.r1.y;
@@ -189,9 +190,9 @@ Object.assign( LinearConstraint.prototype, {
         this.a2.x -= this.impx*this.ax2x+this.impy*this.ay2x+this.impz*this.az2x;
         this.a2.y -= this.impx*this.ax2y+this.impy*this.ay2y+this.impz*this.az2y;
         this.a2.z -= this.impx*this.ax2z+this.impy*this.ay2z+this.impz*this.az2z;
-    },
+    }
 
-    solve: function () {
+    void solve () {
 
         var d = this.dd.elements;
         var rvx = this.l2.x-this.l1.x+this.a2.y*this.r2z-this.a2.z*this.r2y-this.a1.y*this.r1z+this.a1.z*this.r1y-this.velx;
@@ -218,6 +219,4 @@ Object.assign( LinearConstraint.prototype, {
 
     }
 
-} );
-
-export { LinearConstraint };
+}
