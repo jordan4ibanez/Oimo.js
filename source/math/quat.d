@@ -282,6 +282,7 @@ struct Quat {
             int k = (i+2)%3;
             
             s = _Math.sqrt( m.elements[i*3+i] - m.elements[j*3+j] - m.elements[k*3+k] + 1.0 );
+            // This used to be fRoot?
             out_[i] = 0.5 * 1;
             s = 0.5 / 1;
             this.w = ( m.elements[j*3+k] - m.elements[k*3+j] ) * s;
