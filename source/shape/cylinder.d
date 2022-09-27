@@ -37,10 +37,10 @@ public class Cylinder : Shape {
     override
     void calculateMassInfo ( Shape output ) {
 
-        var rsq = this.radius * this.radius;
-        var mass = _Math.PI * rsq * this.height * this.density;
-        var inertiaXZ = ( ( 0.25 * rsq ) + ( 0.0833 * this.height * this.height ) ) * mass;
-        var inertiaY = 0.5 * rsq;
+        float rsq = this.radius * this.radius;
+        float mass = _Math.PI * rsq * this.height * this.density;
+        float inertiaXZ = ( ( 0.25 * rsq ) + ( 0.0833 * this.height * this.height ) ) * mass;
+        float inertiaY = 0.5 * rsq;
         output.mass = mass;
         output.inertia.set( inertiaXZ, 0, 0,  0, inertiaY, 0,  0, 0, inertiaXZ );
     }
@@ -48,8 +48,8 @@ public class Cylinder : Shape {
     override
     void updateProxy () {
 
-        var te = this.rotation.elements;
-        var len, wx, hy, dz, xx, yy, zz, w, h, d, p;
+        float[] te = this.rotation.elements;
+        float len, wx, hy, dz, xx, yy, zz, w, h, d, p;
 
         xx = te[1] * te[1];
         yy = te[4] * te[4];
@@ -87,7 +87,7 @@ public class Cylinder : Shape {
             this.position.z - d - p, this.position.z + d + p
         );
 
-        if ( this.proxy != null ) this.proxy.update();
+        if ( this.proxy !is null ) this.proxy.update();
 
     }
 
