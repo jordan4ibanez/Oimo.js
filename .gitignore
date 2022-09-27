@@ -19,3 +19,4 @@ oimo-test-*
 *.pdb
 *.dll
 *.lib
+/source/app.d
