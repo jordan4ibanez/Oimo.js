@@ -62,6 +62,13 @@ private static struct LMath {
     }
 
     //clamp: function ( x, a, b ) { return ( x < a ) ? a : ( ( x > b ) ? b : x ); },
+    float distance( float[] p1, float[] p2 ){
+
+        var xd = p2[0]-p1[0];
+        var yd = p2[1]-p1[1];
+        var zd = p2[2]-p1[2];
+        return IMath.sqrt(xd*xd + yd*yd + zd*zd);
+    }
 
     float distance( Vector3 p1, Vector3 p2 ){
         float xd = p2.x - p1.x;
