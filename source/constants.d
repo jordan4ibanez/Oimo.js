@@ -1,4 +1,4 @@
-module src.constants;
+module constants;
 
 /*
  * A list of constants built-in for
