@@ -1,7 +1,11 @@
+module shape.cylinder;
+
 import { SHAPE_CYLINDER, AABB_PROX } from '../constants';
 import { Shape } from './Shape';
 import { _Math } from '../math/Math';
 import { Vec3 } from '../math/Vec3';
+
+import constants;
 
 /**
  * Cylinder shape
