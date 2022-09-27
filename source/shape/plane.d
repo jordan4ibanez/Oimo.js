@@ -1,45 +1,40 @@
 module shape.plane;
 
-import { SHAPE_PLANE, AABB_PROX } from '../constants';
-import { Shape } from './Shape';
-import { _Math } from '../math/Math';
-import { Vec3 } from '../math/Vec3';
+import constants;
+import shape.shape;
+import math.math;
+import math.vec3;
 
 /**
  * Plane shape.
  * @author lo-th
  */
 
-function Plane( config, normal ) {
+public class Plane : Shape {
+    this( ShapeConfig config, float normal ) {
 
-    Shape.call( this, config );
+        super(config);
 
-    this.type = SHAPE_PLANE;
+        this.type = SHAPE_PLANE;
 
-    // radius of the shape.
-    this.normal = new Vec3( 0, 1, 0 );
+        // radius of the shape.
+        this.normal = new Vec3( 0, 1, 0 );
 
-};
+    }
 
-Plane.prototype = Object.assign( Object.create( Shape.prototype ), {
+    float volume () {
+        return float.max;
+    }
 
-    constructor: Plane,
+    void calculateMassInfo ( Shape output ) {
 
-    volume: function () {
-
-        return Number.MAX_VALUE;
-
-    },
-
-    calculateMassInfo: function ( out ) {
-
-        out.mass = this.density;//0.0001;
+        output.mass = this.density;//0.0001;
         var inertia = 1;
-        out.inertia.set( inertia, 0, 0, 0, inertia, 0, 0, 0, inertia );
+        output.inertia.set( inertia, 0, 0, 0, inertia, 0, 0, 0, inertia );
 
-    },
+    }
 
-    updateProxy: function () {
+    void updateProxy () {
 
         var p = AABB_PROX;
 
@@ -48,15 +43,13 @@ Plane.prototype = Object.assign( Object.create( Shape.prototype ), {
         var n = this.normal;
         // The plane AABB is infinite, except if the normal is pointing along any axis
         this.aabb.set(
-            n.x === -1 ? this.position.x - p : min, n.x === 1 ? this.position.x + p : max,
-            n.y === -1 ? this.position.y - p : min, n.y === 1 ? this.position.y + p : max,
-            n.z === -1 ? this.position.z - p : min, n.z === 1 ? this.position.z + p : max
+            n.x == -1 ? this.position.x - p : min, n.x == 1 ? this.position.x + p : max,
+            n.y == -1 ? this.position.y - p : min, n.y == 1 ? this.position.y + p : max,
+            n.z == -1 ? this.position.z - p : min, n.z == 1 ? this.position.z + p : max
         );
 
         if ( this.proxy != null ) this.proxy.update();
 
     }
 
-});
-
-export { Plane };
+}
