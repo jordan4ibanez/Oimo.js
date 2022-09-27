@@ -8,8 +8,6 @@ import { Mat33 } from '../math/Mat33';
 import { Quat } from '../math/Quat';
 import { Vec3 } from '../math/Vec3';
 
-import { Contact } from '../constraint/contact/Contact';
-
 
 /**
 * The class of rigid body.
