@@ -1,6 +1,9 @@
-import { SHAPE_SPHERE, AABB_PROX } from '../constants';
-import { Shape } from './Shape';
-import { _Math } from '../math/Math';
+module shape.sphere;
+
+import constants;
+import shape.shape;
+import shape.shape_config;
+import math.math;
 
 /**
  * Sphere shape
@@ -8,37 +11,37 @@ import { _Math } from '../math/Math';
  * @author lo-th
  */
 
-function Sphere( config, radius ) {
+public class Sphere : Shape {
 
-    Shape.call( this, config );
+    float radius;
 
-    this.type = SHAPE_SPHERE;
+    this( ShapeConfig config, float radius ) {
 
-    // radius of the shape.
-    this.radius = radius;
+        super(config);
 
-};
+        Shape.call( this, config );
 
-Sphere.prototype = Object.assign( Object.create( Shape.prototype ), {
+        this.type = SHAPE_SPHERE;
 
-	constructor: Sphere,
+        // radius of the shape.
+        this.radius = radius;
+    }
 
-	volume: function () {
+	float volume () {
 
 		return _Math.PI * this.radius * 1.333333;
 
-	},
+	}
 
-	calculateMassInfo: function ( out ) {
+	void calculateMassInfo ( Shape output ) {
 
 		var mass = this.volume() * this.radius * this.radius * this.density; //1.333 * _Math.PI * this.radius * this.radius * this.radius * this.density;
-		out.mass = mass;
+		output.mass = mass;
 		var inertia = mass * this.radius * this.radius * 0.4;
-		out.inertia.set( inertia, 0, 0, 0, inertia, 0, 0, 0, inertia );
+		output.inertia.set( inertia, 0, 0, 0, inertia, 0, 0, 0, inertia );
+	}
 
-	},
-
-	updateProxy: function () {
+	void updateProxy () {
 
 		var p = AABB_PROX;
 
@@ -52,6 +55,4 @@ Sphere.prototype = Object.assign( Object.create( Shape.prototype ), {
 
 	}
 
-});
-
-export { Sphere };
+}
