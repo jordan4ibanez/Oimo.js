@@ -25,14 +25,14 @@ public class Particle : Shape {
     
     override
     void calculateMassInfo ( Shape output ) {
-        var inertia = 0;
+        float inertia = 0;
         output.inertia.set( inertia, 0, 0, 0, inertia, 0, 0, 0, inertia );
     }
 
     override
     void updateProxy () {
 
-        var p = 0;//AABB_PROX;
+        float p = 0;//AABB_PROX;
 
         this.aabb.set(
             this.position.x - p, this.position.x + p,
@@ -40,7 +40,7 @@ public class Particle : Shape {
             this.position.z - p, this.position.z + p
         );
 
-        if ( this.proxy != null ) this.proxy.update();
+        if ( this.proxy !is null ) this.proxy.update();
 
     }
 
