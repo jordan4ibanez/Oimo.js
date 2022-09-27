@@ -1,3 +1,5 @@
+module shape.plane;
+
 import { SHAPE_PLANE, AABB_PROX } from '../constants';
 import { Shape } from './Shape';
 import { _Math } from '../math/Math';
