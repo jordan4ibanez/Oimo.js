@@ -113,4 +113,4 @@ private static struct LMath {
     }
 }
 
-alias Math = LMath;
+alias _Math = LMath;
