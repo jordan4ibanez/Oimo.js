@@ -18,6 +18,14 @@ int shapeIdCount() {
     return count++;
 }
 
+public class Proxy {
+
+}
+
+public class RigidBody{
+    
+}
+
 /**
  * A shape is used to detect collisions of rigid bodies.
  *
@@ -39,7 +47,7 @@ class Shape : MassInfo {
     Shape next;
 
     // proxy of the shape used for broad-phase collision detection.
-    BasicProxy proxy;
+    Proxy proxy;
 
     // parent rigid body of the shape.
     RigidBody parent;
