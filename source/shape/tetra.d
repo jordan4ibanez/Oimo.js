@@ -1,3 +1,5 @@
+module shape.tetra;
+
 import { SHAPE_TETRA, AABB_PROX } from '../constants';
 import { Shape } from './Shape';
 
