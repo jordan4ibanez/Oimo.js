@@ -140,7 +140,7 @@ class Shape {
 
     // Calculate the mass information of the shape.
 
-    void calculateMassInfo ( float output ){
+    void calculateMassInfo ( Shape output ){
 
         throw new Exception("Shape Inheritance error.");
 
