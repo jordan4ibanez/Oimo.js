@@ -7,6 +7,7 @@ import math.vec3;
 import math.mat33;
 import math.aabb;
 import shape.shape_config;
+import shape.mass_info;
 
 import std.algorithm.comparison : equal;
 import std.container : DList;
@@ -24,7 +25,7 @@ int shapeIdCount() {
  * @author lo-th
  */
 
-class Shape {
+class Shape : MassInfo {
 
     int type;
 
@@ -80,6 +81,8 @@ class Shape {
     int collidesWith;
 
     this(ShapeConfig config) {
+
+        super();
 
         this.type = SHAPE_NULL;
 
