@@ -1,23 +1,23 @@
 module math.quat;
 
-import { _Math } from './Math';
-import { Vec3 } from './Vec3';
+import math.math;
+import math.vec3;
 
-function Quat ( x, y, z, w ){
+struct Quat {
 
-    this.x = x || 0;
-    this.y = y || 0;
-    this.z = z || 0;
-    this.w = ( w !== undefined ) ? w : 1;
+    float x = 0;
+    float y = 0;
+    float z = 0;
+    float w = 1;
 
-}
+    this( float x, float y, float z, float w ){
+        this.x = x || 0;
+        this.y = y || 0;
+        this.z = z || 0;
+        this.w = w || 1;
+    }
 
-Object.assign( Quat.prototype, {
-
-    Quat: true,
-
-    set: function ( x, y, z, w ) {
-
+    Quat set ( float x, float y, float z, float w ) {
         
         this.x = x;
         this.y = y;
@@ -26,12 +26,17 @@ Object.assign( Quat.prototype, {
 
         return this;
 
-    },
+    }
 
-    addTime: function( v, t ){
+    Quat addTime( Vec3 v, float t ){
 
-        var ax = v.x, ay = v.y, az = v.z;
-        var qw = this.w, qx = this.x, qy = this.y, qz = this.z;
+        float ax = v.x;
+        float ay = v.y;
+        float az = v.z;
+        float qw = this.w;
+        float qx = this.x;
+        float qy = this.y;
+        float qz = this.z;
         t *= 0.5;    
         this.x += t * (  ax*qw + ay*qz - az*qy );
         this.y += t * (  ay*qw + az*qx - ax*qz );
@@ -40,9 +45,9 @@ Object.assign( Quat.prototype, {
         this.normalize();
         return this;
 
-    },
+    }
 
-    /*mul: function( q1, q2 ){
+    /*mul( q1, q2 ){
 
         var ax = q1.x, ay = q1.y, az = q1.z, as = q1.w,
         bx = q2.x, by = q2.y, bz = q2.z, bs = q2.w;
@@ -52,16 +57,15 @@ Object.assign( Quat.prototype, {
         this.w = as * bs - ax * bx - ay * by - az * bz;
         return this;
 
-    },*/
+    }*/
 
-    multiply: function ( q, p ) {
+    Quat multiply ( Quat q ) {
 
-        if ( p !== undefined ) return this.multiplyQuaternions( q, p );
         return this.multiplyQuaternions( this, q );
 
-    },
+    }
 
-    multiplyQuaternions: function ( a, b ) {
+    Quat multiplyQuaternions ( Quat a, Quat b ) {
 
         var qax = a.x, qay = a.y, qaz = a.z, qaw = a.w;
         var qbx = b.x, qby = b.y, qbz = b.z, qbw = b.w;
@@ -72,9 +76,9 @@ Object.assign( Quat.prototype, {
         this.w = qaw * qbw - qax * qbx - qay * qby - qaz * qbz;
         return this;
 
-    },
+    }
 
-    setFromUnitVectors: function( v1, v2 ) {
+    Quat setFromUnitVectors( Vec3 v1, Vec3 v2 ) {
 
         var vx = new Vec3();
         var r = v1.dot( v2 ) + 1;
@@ -98,9 +102,9 @@ Object.assign( Quat.prototype, {
 
         return this.normalize();
 
-    },
+    }
 
-    arc: function( v1, v2 ){
+    Quat arc( Vec3 v1, Vec3 v2 ){
 
         var x1 = v1.x;
         var y1 = v1.y;
@@ -130,12 +134,12 @@ Object.assign( Quat.prototype, {
         this.z = cz * d;
         return this;
 
-    },
+    }
 
-    normalize: function(){
+    Quat normalize(){
 
-        var l = this.length();
-        if ( l === 0 ) {
+        float l = this.length();
+        if ( l == 0 ) {
             this.set( 0, 0, 0, 1 );
         } else {
             l = 1 / l;
@@ -146,15 +150,15 @@ Object.assign( Quat.prototype, {
         }
         return this;
 
-    },
+    }
 
-    inverse: function () {
+    Quat inverse () {
 
         return this.conjugate().normalize();
 
-    },
+    }
 
-    invert: function ( q ) {
+    Quat invert ( Quat q ) {
 
         this.x = q.x;
         this.y = q.y;
@@ -163,30 +167,30 @@ Object.assign( Quat.prototype, {
         this.conjugate().normalize();
         return this;
 
-    },
+    }
 
-    conjugate: function () {
+    Quat conjugate () {
 
         this.x *= - 1;
         this.y *= - 1;
         this.z *= - 1;
         return this;
 
-    },
+    }
 
-    length: function(){
+    float length(){
 
         return _Math.sqrt( this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w  );
 
-    },
+    }
 
-    lengthSq: function () {
+    float lengthSq () {
 
         return this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w;
 
-    },
+    }
     
-    copy: function( q ){
+    Quat copy( Quat q ){
         
         this.x = q.x;
         this.y = q.y;
@@ -194,33 +198,27 @@ Object.assign( Quat.prototype, {
         this.w = q.w;
         return this;
 
-    },
+    }
 
-    clone: function( q ){
+    Quat clone( Quat q ){
 
-        return new Quat( this.x, this.y, this.z, this.w );
+        return Quat( this.x, this.y, this.z, this.w );
 
-    },
+    }
 
-    testDiff: function ( q ) {
+    bool testDiff ( Quat q ) {
 
         return this.equals( q ) ? false : true;
 
-    },
+    }
 
-    equals: function ( q ) {
+    bool equals ( Quat q ) {
 
-        return this.x === q.x && this.y === q.y && this.z === q.z && this.w === q.w;
+        return this.x == q.x && this.y == q.y && this.z == q.z && this.w == q.w;
 
-    },
+    }
 
-    toString: function(){
-
-        return"Quat["+this.x.toFixed(4)+", ("+this.y.toFixed(4)+", "+this.z.toFixed(4)+", "+this.w.toFixed(4)+")]";
-        
-    },
-
-    setFromEuler: function ( x, y, z ){
+    Quat setFromEuler ( float x, float y, float z ){
 
         var c1 = Math.cos( x * 0.5 );
         var c2 = Math.cos( y * 0.5 );
@@ -237,9 +235,9 @@ Object.assign( Quat.prototype, {
 
         return this;
 
-    },
+    }
     
-    setFromAxis: function ( axis, rad ) {
+    Quat setFromAxis ( AABB axis, float rad ) {
 
         axis.normalize();
         rad = rad * 0.5;
@@ -250,12 +248,12 @@ Object.assign( Quat.prototype, {
         this.w = _Math.cos( rad );
         return this;
 
-    },
+    }
 
-    setFromMat33: function ( m ) {
+    Quat setFromMat33 ( Mat33 m ) {
 
-        var trace = m[0] + m[4] + m[8];
-        var s;
+        float trace = m[0] + m[4] + m[8];
+        float s;
 
         if ( trace > 0 ) {
 
@@ -268,8 +266,8 @@ Object.assign( Quat.prototype, {
 
         } else {
 
-            var out = [];
-            var i = 0;
+            float[] out_ = new float[16];
+            int i = 0;
             if ( m[4] > m[0] ) i = 1;
             if ( m[8] > m[i*3+i] ) i = 2;
 
@@ -277,23 +275,23 @@ Object.assign( Quat.prototype, {
             var k = (i+2)%3;
             
             s = _Math.sqrt( m[i*3+i] - m[j*3+j] - m[k*3+k] + 1.0 );
-            out[i] = 0.5 * fRoot;
+            out_[i] = 0.5 * fRoot;
             s = 0.5 / fRoot;
             this.w = ( m[j*3+k] - m[k*3+j] ) * s;
-            out[j] = ( m[j*3+i] + m[i*3+j] ) * s;
-            out[k] = ( m[k*3+i] + m[i*3+k] ) * s;
+            out_[j] = ( m[j*3+i] + m[i*3+j] ) * s;
+            out_[k] = ( m[k*3+i] + m[i*3+k] ) * s;
 
-            this.x = out[1];
-            this.y = out[2];
-            this.z = out[3];
+            this.x = out_[1];
+            this.y = out_[2];
+            this.z = out_[3];
 
         }
 
         return this;
 
-    },
+    }
 
-    toArray: function ( array, offset ) {
+    float[] toArray ( float[] array, int offset ) {
 
         offset = offset || 0;
 
@@ -302,16 +300,13 @@ Object.assign( Quat.prototype, {
         array[ offset + 2 ] = this.z;
         array[ offset + 3 ] = this.w;
 
-    },
+    }
 
-    fromArray: function( array, offset ){
+    Quat fromArray( float[] array, int offset ){
 
         offset = offset || 0;
         this.set( array[ offset ], array[ offset + 1 ], array[ offset + 2 ], array[ offset + 3 ] );
         return this;
 
     }
-
-});
-
-export { Quat };
+}
