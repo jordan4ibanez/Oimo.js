@@ -17,3 +17,5 @@ oimo-test-*
 *.obj
 *.lst
 *.pdb
+*.dll
+*.lib
