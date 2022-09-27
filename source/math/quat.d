@@ -1,3 +1,5 @@
+module math.quat;
+
 import { _Math } from './Math';
 import { Vec3 } from './Vec3';
 
