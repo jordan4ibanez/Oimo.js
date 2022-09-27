@@ -10,5 +10,10 @@
 	"description": "JavaScript 3D physics engine.",
 	"homepage": "http://lo-th.github.io/Oimo.js/",
 	"license": "MIT",
-	"name": "oimo"
+	"name": "oimo",
+
+    "These need to be removed!": "!!!!!!!!",
+    "libs": [ "raylib" ],
+    "lflags-posix" : ["-L."],
+    "lflags-osx" : ["-rpath", "@executable_path/"],
 }
