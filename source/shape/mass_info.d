@@ -11,7 +11,7 @@ import math.mat33;
 
 public class MassInfo {
     float mass;
-    float inertia;
+    Mat33 inertia;
 
     this() {
         // Mass of the shape.
