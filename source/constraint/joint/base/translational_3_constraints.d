@@ -1,179 +1,178 @@
+module constraint.joint.base.translational_3_constraints;
+
 /**
 * A three-axis translational constraint for various joints.
 * @author saharan
 */
-function Translational3Constraint (joint,limitMotor1,limitMotor2,limitMotor3){
+public class Translational3Constraint {
+    float m1;
+    float m2;
+    float i1e00;
+    float i1e01;
+    float i1e02;
+    float i1e10;
+    float i1e11;
+    float i1e12;
+    float i1e20;
+    float i1e21;
+    float i1e22;
+    float i2e00;
+    float i2e01;
+    float i2e02;
+    float i2e10;
+    float i2e11;
+    float i2e12;
+    float i2e20;
+    float i2e21;
+    float i2e22;
+    float ax1;
+    float ay1;
+    float az1;
+    float ax2;
+    float ay2;
+    float az2;
+    float ax3;
+    float ay3;
+    float az3;
+    float r1x;
+    float r1y;
+    float r1z;
+    float r2x;
+    float r2y;
+    float r2z;
+    float t1x1;// jacobians
+    float t1y1;
+    float t1z1;
+    float t2x1;
+    float t2y1;
+    float t2z1;
+    float l1x1;
+    float l1y1;
+    float l1z1;
+    float l2x1;
+    float l2y1;
+    float l2z1;
+    float a1x1;
+    float a1y1;
+    float a1z1;
+    float a2x1;
+    float a2y1;
+    float a2z1;
+    float t1x2;
+    float t1y2;
+    float t1z2;
+    float t2x2;
+    float t2y2;
+    float t2z2;
+    float l1x2;
+    float l1y2;
+    float l1z2;
+    float l2x2;
+    float l2y2;
+    float l2z2;
+    float a1x2;
+    float a1y2;
+    float a1z2;
+    float a2x2;
+    float a2y2;
+    float a2z2;
+    float t1x3;
+    float t1y3;
+    float t1z3;
+    float t2x3;
+    float t2y3;
+    float t2z3;
+    float l1x3;
+    float l1y3;
+    float l1z3;
+    float l2x3;
+    float l2y3;
+    float l2z3;
+    float a1x3;
+    float a1y3;
+    float a1z3;
+    float a2x3;
+    float a2y3;
+    float a2z3;
+    float lowerLimit1;
+    float upperLimit1;
+    float limitVelocity1;
+    int limitState1=0; // -1: at lower, 0: locked, 1: at upper, 2: unlimited
+    bool enableMotor1=false;
+    float motorSpeed1;
+    float maxMotorForce1;
+    float maxMotorImpulse1;
+    float lowerLimit2;
+    float upperLimit2;
+    float limitVelocity2;
+    int limitState2=0; // -1: at lower, 0: locked, 1: at upper, 2: unlimited
+    bool enableMotor2=false;
+    float motorSpeed2;
+    float maxMotorForce2;
+    float maxMotorImpulse2;
+    float lowerLimit3;
+    float upperLimit3;
+    float limitVelocity3;
+    int limitState3=0; // -1: at lower, 0: locked, 1: at upper, 2: unlimited
+    bool enableMotor3=false;
+    float motorSpeed3;
+    float maxMotorForce3;
+    float maxMotorImpulse3;
+    float k00; // K = J*M*JT
+    float k01;
+    float k02;
+    float k10;
+    float k11;
+    float k12;
+    float k20;
+    float k21;
+    float k22;
+    float kv00; // diagonals without CFMs
+    float kv11;
+    float kv22;
+    float dv00; // ...inverted
+    float dv11;
+    float dv22;
+    float d00; // K^-1
+    float d01;
+    float d02;
+    float d10;
+    float d11;
+    float d12;
+    float d20;
+    float d21;
+    float d22;
 
-    this.m1=NaN;
-    this.m2=NaN;
-    this.i1e00=NaN;
-    this.i1e01=NaN;
-    this.i1e02=NaN;
-    this.i1e10=NaN;
-    this.i1e11=NaN;
-    this.i1e12=NaN;
-    this.i1e20=NaN;
-    this.i1e21=NaN;
-    this.i1e22=NaN;
-    this.i2e00=NaN;
-    this.i2e01=NaN;
-    this.i2e02=NaN;
-    this.i2e10=NaN;
-    this.i2e11=NaN;
-    this.i2e12=NaN;
-    this.i2e20=NaN;
-    this.i2e21=NaN;
-    this.i2e22=NaN;
-    this.ax1=NaN;
-    this.ay1=NaN;
-    this.az1=NaN;
-    this.ax2=NaN;
-    this.ay2=NaN;
-    this.az2=NaN;
-    this.ax3=NaN;
-    this.ay3=NaN;
-    this.az3=NaN;
-    this.r1x=NaN;
-    this.r1y=NaN;
-    this.r1z=NaN;
-    this.r2x=NaN;
-    this.r2y=NaN;
-    this.r2z=NaN;
-    this.t1x1=NaN;// jacobians
-    this.t1y1=NaN;
-    this.t1z1=NaN;
-    this.t2x1=NaN;
-    this.t2y1=NaN;
-    this.t2z1=NaN;
-    this.l1x1=NaN;
-    this.l1y1=NaN;
-    this.l1z1=NaN;
-    this.l2x1=NaN;
-    this.l2y1=NaN;
-    this.l2z1=NaN;
-    this.a1x1=NaN;
-    this.a1y1=NaN;
-    this.a1z1=NaN;
-    this.a2x1=NaN;
-    this.a2y1=NaN;
-    this.a2z1=NaN;
-    this.t1x2=NaN;
-    this.t1y2=NaN;
-    this.t1z2=NaN;
-    this.t2x2=NaN;
-    this.t2y2=NaN;
-    this.t2z2=NaN;
-    this.l1x2=NaN;
-    this.l1y2=NaN;
-    this.l1z2=NaN;
-    this.l2x2=NaN;
-    this.l2y2=NaN;
-    this.l2z2=NaN;
-    this.a1x2=NaN;
-    this.a1y2=NaN;
-    this.a1z2=NaN;
-    this.a2x2=NaN;
-    this.a2y2=NaN;
-    this.a2z2=NaN;
-    this.t1x3=NaN;
-    this.t1y3=NaN;
-    this.t1z3=NaN;
-    this.t2x3=NaN;
-    this.t2y3=NaN;
-    this.t2z3=NaN;
-    this.l1x3=NaN;
-    this.l1y3=NaN;
-    this.l1z3=NaN;
-    this.l2x3=NaN;
-    this.l2y3=NaN;
-    this.l2z3=NaN;
-    this.a1x3=NaN;
-    this.a1y3=NaN;
-    this.a1z3=NaN;
-    this.a2x3=NaN;
-    this.a2y3=NaN;
-    this.a2z3=NaN;
-    this.lowerLimit1=NaN;
-    this.upperLimit1=NaN;
-    this.limitVelocity1=NaN;
-    this.limitState1=0; // -1: at lower, 0: locked, 1: at upper, 2: unlimited
-    this.enableMotor1=false;
-    this.motorSpeed1=NaN;
-    this.maxMotorForce1=NaN;
-    this.maxMotorImpulse1=NaN;
-    this.lowerLimit2=NaN;
-    this.upperLimit2=NaN;
-    this.limitVelocity2=NaN;
-    this.limitState2=0; // -1: at lower, 0: locked, 1: at upper, 2: unlimited
-    this.enableMotor2=false;
-    this.motorSpeed2=NaN;
-    this.maxMotorForce2=NaN;
-    this.maxMotorImpulse2=NaN;
-    this.lowerLimit3=NaN;
-    this.upperLimit3=NaN;
-    this.limitVelocity3=NaN;
-    this.limitState3=0; // -1: at lower, 0: locked, 1: at upper, 2: unlimited
-    this.enableMotor3=false;
-    this.motorSpeed3=NaN;
-    this.maxMotorForce3=NaN;
-    this.maxMotorImpulse3=NaN;
-    this.k00=NaN; // K = J*M*JT
-    this.k01=NaN;
-    this.k02=NaN;
-    this.k10=NaN;
-    this.k11=NaN;
-    this.k12=NaN;
-    this.k20=NaN;
-    this.k21=NaN;
-    this.k22=NaN;
-    this.kv00=NaN; // diagonals without CFMs
-    this.kv11=NaN;
-    this.kv22=NaN;
-    this.dv00=NaN; // ...inverted
-    this.dv11=NaN;
-    this.dv22=NaN;
-    this.d00=NaN; // K^-1
-    this.d01=NaN;
-    this.d02=NaN;
-    this.d10=NaN;
-    this.d11=NaN;
-    this.d12=NaN;
-    this.d20=NaN;
-    this.d21=NaN;
-    this.d22=NaN;
+    float limitImpulse1=0;
+    float motorImpulse1=0;
+    float limitImpulse2=0;
+    float motorImpulse2=0;
+    float limitImpulse3=0;
+    float motorImpulse3=0;
+    float cfm1=0;// Constraint Force Mixing
+    float cfm2=0;
+    float cfm3=0;
+    float weight=-1;
 
-    this.limitMotor1=limitMotor1;
-    this.limitMotor2=limitMotor2;
-    this.limitMotor3=limitMotor3;
-    this.b1=joint.body1;
-    this.b2=joint.body2;
-    this.p1=joint.anchorPoint1;
-    this.p2=joint.anchorPoint2;
-    this.r1=joint.relativeAnchorPoint1;
-    this.r2=joint.relativeAnchorPoint2;
-    this.l1=this.b1.linearVelocity;
-    this.l2=this.b2.linearVelocity;
-    this.a1=this.b1.angularVelocity;
-    this.a2=this.b2.angularVelocity;
-    this.i1=this.b1.inverseInertia;
-    this.i2=this.b2.inverseInertia;
-    this.limitImpulse1=0;
-    this.motorImpulse1=0;
-    this.limitImpulse2=0;
-    this.motorImpulse2=0;
-    this.limitImpulse3=0;
-    this.motorImpulse3=0;
-    this.cfm1=0;// Constraint Force Mixing
-    this.cfm2=0;
-    this.cfm3=0;
-    this.weight=-1;
-}
+    this ( Joint joint, LimitMotor limitMotor1, LimitMotor limitMotor2, LimitMotor limitMotor3){
+        this.limitMotor1=limitMotor1;
+        this.limitMotor2=limitMotor2;
+        this.limitMotor3=limitMotor3;
+        this.b1=joint.body1;
+        this.b2=joint.body2;
+        this.p1=joint.anchorPoint1;
+        this.p2=joint.anchorPoint2;
+        this.r1=joint.relativeAnchorPoint1;
+        this.r2=joint.relativeAnchorPoint2;
+        this.l1=this.b1.linearVelocity;
+        this.l2=this.b2.linearVelocity;
+        this.a1=this.b1.angularVelocity;
+        this.a2=this.b2.angularVelocity;
+        this.i1=this.b1.inverseInertia;
+        this.i2=this.b2.inverseInertia;
+    }
 
-Object.assign( Translational3Constraint.prototype, {
-
-    Translational3Constraint: true,
-
-    preSolve:function(timeStep,invTimeStep){
+    void preSolve(float timeStep,float invTimeStep){
         this.ax1=this.limitMotor1.axis.x;
         this.ay1=this.limitMotor1.axis.y;
         this.az1=this.limitMotor1.axis.z;
@@ -201,8 +200,8 @@ Object.assign( Translational3Constraint.prototype, {
         this.m1=this.b1.inverseMass;
         this.m2=this.b2.inverseMass;
 
-        var ti1 = this.i1.elements;
-        var ti2 = this.i2.elements;
+        float[] ti1 = this.i1.elements;
+        float[] ti2 = this.i2.elements;
         this.i1e00=ti1[0];
         this.i1e01=ti1[1];
         this.i1e02=ti1[2];
@@ -223,21 +222,21 @@ Object.assign( Translational3Constraint.prototype, {
         this.i2e21=ti2[7];
         this.i2e22=ti2[8];
 
-        var dx=this.p2.x-this.p1.x;
-        var dy=this.p2.y-this.p1.y;
-        var dz=this.p2.z-this.p1.z;
-        var d1=dx*this.ax1+dy*this.ay1+dz*this.az1;
-        var d2=dx*this.ax2+dy*this.ay2+dz*this.az2;
-        var d3=dx*this.ax3+dy*this.ay3+dz*this.az3;
-        var frequency1=this.limitMotor1.frequency;
-        var frequency2=this.limitMotor2.frequency;
-        var frequency3=this.limitMotor3.frequency;
-        var enableSpring1=frequency1>0;
-        var enableSpring2=frequency2>0;
-        var enableSpring3=frequency3>0;
-        var enableLimit1=this.lowerLimit1<=this.upperLimit1;
-        var enableLimit2=this.lowerLimit2<=this.upperLimit2;
-        var enableLimit3=this.lowerLimit3<=this.upperLimit3;
+        float dx=this.p2.x-this.p1.x;
+        float dy=this.p2.y-this.p1.y;
+        float dz=this.p2.z-this.p1.z;
+        float d1=dx*this.ax1+dy*this.ay1+dz*this.az1;
+        float d2=dx*this.ax2+dy*this.ay2+dz*this.az2;
+        float d3=dx*this.ax3+dy*this.ay3+dz*this.az3;
+        float frequency1=this.limitMotor1.frequency;
+        float frequency2=this.limitMotor2.frequency;
+        float frequency3=this.limitMotor3.frequency;
+        bool enableSpring1=frequency1>0;
+        bool enableSpring2=frequency2>0;
+        bool enableSpring3=frequency3>0;
+        bool enableLimit1=this.lowerLimit1<=this.upperLimit1;
+        bool enableLimit2=this.lowerLimit2<=this.upperLimit2;
+        bool enableLimit3=this.lowerLimit3<=this.upperLimit3;
 
         // for stability
         if(enableSpring1&&d1>20||d1<-20){
@@ -382,12 +381,12 @@ Object.assign( Translational3Constraint.prototype, {
             this.maxMotorImpulse3=0;
         }
         
-        var rdx=d1*this.ax1+d2*this.ax2+d3*this.ax2;
-        var rdy=d1*this.ay1+d2*this.ay2+d3*this.ay2;
-        var rdz=d1*this.az1+d2*this.az2+d3*this.az2;
-        var w1=this.m2/(this.m1+this.m2);
+        float rdx=d1*this.ax1+d2*this.ax2+d3*this.ax2;
+        float rdy=d1*this.ay1+d2*this.ay2+d3*this.ay2;
+        float rdz=d1*this.az1+d2*this.az2+d3*this.az2;
+        float w1=this.m2/(this.m1+this.m2);
         if(this.weight>=0)w1=this.weight; // use given weight
-        var w2=1-w1;
+        float w2=1-w1;
         this.r1x=this.r1.x+rdx*w1;
         this.r1y=this.r1.y+rdy*w1;
         this.r1z=this.r1.z+rdz*w1;
@@ -454,7 +453,7 @@ Object.assign( Translational3Constraint.prototype, {
         this.a2z3=this.t2x3*this.i2e20+this.t2y3*this.i2e21+this.t2z3*this.i2e22;
 
         // build an impulse matrix
-        var m12=this.m1+this.m2;
+        float m12=this.m1+this.m2;
         this.k00=(this.ax1*this.ax1+this.ay1*this.ay1+this.az1*this.az1)*m12;
         this.k01=(this.ax1*this.ax2+this.ay1*this.ay2+this.az1*this.az2)*m12;
         this.k02=(this.ax1*this.ax3+this.ay1*this.ay3+this.az1*this.az3)*m12;
@@ -494,9 +493,9 @@ Object.assign( Translational3Constraint.prototype, {
         this.dv22=1/this.kv22;
 
         if(enableSpring1&&this.limitState1!=2){
-            var omega=6.2831853*frequency1;
-            var k=omega*omega*timeStep;
-            var dmp=invTimeStep/(k+2*this.limitMotor1.dampingRatio*omega);
+            float omega=6.2831853*frequency1;
+            float k=omega*omega*timeStep;
+            float dmp=invTimeStep/(k+2*this.limitMotor1.dampingRatio*omega);
             this.cfm1=this.kv00*dmp;
             this.limitVelocity1*=k*dmp;
         }else{
@@ -527,7 +526,7 @@ Object.assign( Translational3Constraint.prototype, {
         this.k11+=this.cfm2;
         this.k22+=this.cfm3;
 
-        var inv=1/(
+        float inv=1/(
         this.k00*(this.k11*this.k22-this.k21*this.k12)+
         this.k10*(this.k21*this.k02-this.k01*this.k22)+
         this.k20*(this.k01*this.k12-this.k11*this.k02)
@@ -543,9 +542,9 @@ Object.assign( Translational3Constraint.prototype, {
         this.d22=(this.k00*this.k11-this.k01*this.k10)*inv;
 
         // warm starting
-        var totalImpulse1=this.limitImpulse1+this.motorImpulse1;
-        var totalImpulse2=this.limitImpulse2+this.motorImpulse2;
-        var totalImpulse3=this.limitImpulse3+this.motorImpulse3;
+        float totalImpulse1=this.limitImpulse1+this.motorImpulse1;
+        float totalImpulse2=this.limitImpulse2+this.motorImpulse2;
+        float totalImpulse3=this.limitImpulse3+this.motorImpulse3;
         this.l1.x+=totalImpulse1*this.l1x1+totalImpulse2*this.l1x2+totalImpulse3*this.l1x3;
         this.l1.y+=totalImpulse1*this.l1y1+totalImpulse2*this.l1y2+totalImpulse3*this.l1y3;
         this.l1.z+=totalImpulse1*this.l1z1+totalImpulse2*this.l1z2+totalImpulse3*this.l1z3;
@@ -558,21 +557,21 @@ Object.assign( Translational3Constraint.prototype, {
         this.a2.x-=totalImpulse1*this.a2x1+totalImpulse2*this.a2x2+totalImpulse3*this.a2x3;
         this.a2.y-=totalImpulse1*this.a2y1+totalImpulse2*this.a2y2+totalImpulse3*this.a2y3;
         this.a2.z-=totalImpulse1*this.a2z1+totalImpulse2*this.a2z2+totalImpulse3*this.a2z3;
-    },
+    }
 
-    solve:function(){
-        var rvx=this.l2.x-this.l1.x+this.a2.y*this.r2z-this.a2.z*this.r2y-this.a1.y*this.r1z+this.a1.z*this.r1y;
-        var rvy=this.l2.y-this.l1.y+this.a2.z*this.r2x-this.a2.x*this.r2z-this.a1.z*this.r1x+this.a1.x*this.r1z;
-        var rvz=this.l2.z-this.l1.z+this.a2.x*this.r2y-this.a2.y*this.r2x-this.a1.x*this.r1y+this.a1.y*this.r1x;
-        var rvn1=rvx*this.ax1+rvy*this.ay1+rvz*this.az1;
-        var rvn2=rvx*this.ax2+rvy*this.ay2+rvz*this.az2;
-        var rvn3=rvx*this.ax3+rvy*this.ay3+rvz*this.az3;
-        var oldMotorImpulse1=this.motorImpulse1;
-        var oldMotorImpulse2=this.motorImpulse2;
-        var oldMotorImpulse3=this.motorImpulse3;
-        var dMotorImpulse1=0;
-        var dMotorImpulse2=0;
-        var dMotorImpulse3=0;
+    void solve(){
+        float rvx=this.l2.x-this.l1.x+this.a2.y*this.r2z-this.a2.z*this.r2y-this.a1.y*this.r1z+this.a1.z*this.r1y;
+        float rvy=this.l2.y-this.l1.y+this.a2.z*this.r2x-this.a2.x*this.r2z-this.a1.z*this.r1x+this.a1.x*this.r1z;
+        float rvz=this.l2.z-this.l1.z+this.a2.x*this.r2y-this.a2.y*this.r2x-this.a1.x*this.r1y+this.a1.y*this.r1x;
+        float rvn1=rvx*this.ax1+rvy*this.ay1+rvz*this.az1;
+        float rvn2=rvx*this.ax2+rvy*this.ay2+rvz*this.az2;
+        float rvn3=rvx*this.ax3+rvy*this.ay3+rvz*this.az3;
+        float oldMotorImpulse1=this.motorImpulse1;
+        float oldMotorImpulse2=this.motorImpulse2;
+        float oldMotorImpulse3=this.motorImpulse3;
+        float dMotorImpulse1=0;
+        float dMotorImpulse2=0;
+        float dMotorImpulse3=0;
         if(this.enableMotor1){
             dMotorImpulse1=(rvn1-this.motorSpeed1)*this.dv00;
             this.motorImpulse1+=dMotorImpulse1;
@@ -614,20 +613,20 @@ Object.assign( Translational3Constraint.prototype, {
         rvn2-=this.limitVelocity2+this.limitImpulse2*this.cfm2;
         rvn3-=this.limitVelocity3+this.limitImpulse3*this.cfm3;
 
-        var oldLimitImpulse1=this.limitImpulse1;
-        var oldLimitImpulse2=this.limitImpulse2;
-        var oldLimitImpulse3=this.limitImpulse3;
+        float oldLimitImpulse1=this.limitImpulse1;
+        float oldLimitImpulse2=this.limitImpulse2;
+        float oldLimitImpulse3=this.limitImpulse3;
 
-        var dLimitImpulse1=rvn1*this.d00+rvn2*this.d01+rvn3*this.d02;
-        var dLimitImpulse2=rvn1*this.d10+rvn2*this.d11+rvn3*this.d12;
-        var dLimitImpulse3=rvn1*this.d20+rvn2*this.d21+rvn3*this.d22;
+        float dLimitImpulse1=rvn1*this.d00+rvn2*this.d01+rvn3*this.d02;
+        float dLimitImpulse2=rvn1*this.d10+rvn2*this.d11+rvn3*this.d12;
+        float dLimitImpulse3=rvn1*this.d20+rvn2*this.d21+rvn3*this.d22;
 
         this.limitImpulse1+=dLimitImpulse1;
         this.limitImpulse2+=dLimitImpulse2;
         this.limitImpulse3+=dLimitImpulse3;
 
         // clamp
-        var clampState=0;
+        int clampState=0;
         if(this.limitState1==2||this.limitImpulse1*this.limitState1<0){
             dLimitImpulse1=-oldLimitImpulse1;
             rvn2+=dLimitImpulse1*this.k10;
@@ -649,7 +648,7 @@ Object.assign( Translational3Constraint.prototype, {
 
         // update un-clamped impulse
         // TODO: isolate division
-        var det;
+        float det;
         switch(clampState){
             case 1:// update 2 3
             det=1/(this.k11*this.k22-this.k12*this.k21);
@@ -681,9 +680,9 @@ Object.assign( Translational3Constraint.prototype, {
         this.limitImpulse2=oldLimitImpulse2+dLimitImpulse2;
         this.limitImpulse3=oldLimitImpulse3+dLimitImpulse3;
 
-        var dImpulse1=dMotorImpulse1+dLimitImpulse1;
-        var dImpulse2=dMotorImpulse2+dLimitImpulse2;
-        var dImpulse3=dMotorImpulse3+dLimitImpulse3;
+        float dImpulse1=dMotorImpulse1+dLimitImpulse1;
+        float dImpulse2=dMotorImpulse2+dLimitImpulse2;
+        float dImpulse3=dMotorImpulse3+dLimitImpulse3;
 
         // apply impulse
         this.l1.x+=dImpulse1*this.l1x1+dImpulse2*this.l1x2+dImpulse3*this.l1x3;
@@ -700,6 +699,4 @@ Object.assign( Translational3Constraint.prototype, {
         this.a2.z-=dImpulse1*this.a2z1+dImpulse2*this.a2z2+dImpulse3*this.a2z3;
     }
     
-} );
-
-export { Translational3Constraint };
+}
