@@ -1,51 +1,44 @@
 module math.mat33;
 
-import { _Math } from './Math';
-import { Vec3 } from './Vec3';
+import math.vec3;
+import math.math;
+import math.quat;
 
-function Mat33 ( e00, e01, e02, e10, e11, e12, e20, e21, e22 ){
+struct Mat33 {
 
-    this.elements = [
+    float[] elements = [
         1, 0, 0,
         0, 1, 0,
         0, 0, 1
     ];
 
-    if ( arguments.length > 0 ) {
-
-        console.error( 'OIMO.Mat33: the constructor no longer reads arguments. use .set() instead.' );
-
+    this( float e00, float e01, float e02, float e10, float e11, float e12, float e20, float e21, float e22 ){
+        this.elements = [
+            1, 0, 0,
+            0, 1, 0,
+            0, 0, 1
+        ];
     }
 
-}
-
-Object.assign( Mat33.prototype, {
-
-    Mat33: true,
-
-    set: function ( e00, e01, e02, e10, e11, e12, e20, e21, e22 ){
+    Mat33 set ( float e00, float e01, float e02, float e10, float e11, float e12, float e20, float e21, float e22 ){
 
         var te = this.elements;
         te[0] = e00; te[1] = e01; te[2] = e02;
         te[3] = e10; te[4] = e11; te[5] = e12;
         te[6] = e20; te[7] = e21; te[8] = e22;
         return this;
-
-    },
+    }
     
-    add: function ( a, b ) {
-
-        if( b !== undefined ) return this.addMatrixs( a, b );
+    Mat33 add ( Mat33 a ) {
 
         var e = this.elements, te = a.elements;
         e[0] += te[0]; e[1] += te[1]; e[2] += te[2];
         e[3] += te[3]; e[4] += te[4]; e[5] += te[5];
         e[6] += te[6]; e[7] += te[7]; e[8] += te[8];
         return this;
+    }
 
-    },
-
-    addMatrixs: function ( a, b ) {
+    Mat33 addMatrixs ( Mat33 a, Mat33 b ) {
 
         var te = this.elements, tem1 = a.elements, tem2 = b.elements;
         te[0] = tem1[0] + tem2[0]; te[1] = tem1[1] + tem2[1]; te[2] = tem1[2] + tem2[2];
@@ -53,9 +46,9 @@ Object.assign( Mat33.prototype, {
         te[6] = tem1[6] + tem2[6]; te[7] = tem1[7] + tem2[7]; te[8] = tem1[8] + tem2[8];
         return this;
 
-    },
+    }
 
-    addEqual: function( m ){
+    Mat33 addEqual( Mat33 m ){
 
         var te = this.elements, tem = m.elements;
         te[0] += tem[0]; te[1] += tem[1]; te[2] += tem[2];
@@ -63,11 +56,11 @@ Object.assign( Mat33.prototype, {
         te[6] += tem[6]; te[7] += tem[7]; te[8] += tem[8];
         return this;
 
-    },
+    }
 
-    sub: function ( a, b ) {
+    Mat33 sub ( Mat33 a, Mat33 b ) {
 
-        if( b !== undefined ) return this.subMatrixs( a, b );
+        if( b != undefined ) return this.subMatrixs( a, b );
 
         var e = this.elements, te = a.elements;
         e[0] -= te[0]; e[1] -= te[1]; e[2] -= te[2];
@@ -75,9 +68,9 @@ Object.assign( Mat33.prototype, {
         e[6] -= te[6]; e[7] -= te[7]; e[8] -= te[8];
         return this;
 
-    },
+    }
 
-    subMatrixs: function ( a, b ) {
+    Mat33 subMatrixs ( Mat33 a, Mat33 b ) {
 
         var te = this.elements, tem1 = a.elements, tem2 = b.elements;
         te[0] = tem1[0] - tem2[0]; te[1] = tem1[1] - tem2[1]; te[2] = tem1[2] - tem2[2];
@@ -85,9 +78,9 @@ Object.assign( Mat33.prototype, {
         te[6] = tem1[6] - tem2[6]; te[7] = tem1[7] - tem2[7]; te[8] = tem1[8] - tem2[8];
         return this;
 
-    },
+    }
 
-    subEqual: function ( m ) {
+    Mat33 subEqual ( Mat33 m ) {
 
         var te = this.elements, tem = m.elements;
         te[0] -= tem[0]; te[1] -= tem[1]; te[2] -= tem[2];
@@ -95,9 +88,9 @@ Object.assign( Mat33.prototype, {
         te[6] -= tem[6]; te[7] -= tem[7]; te[8] -= tem[8];
         return this;
 
-    },
+    }
 
-    scale: function ( m, s ) {
+    Mat33 scale ( Mat33 m, float s ) {
 
         var te = this.elements, tm = m.elements;
         te[0] = tm[0] * s; te[1] = tm[1] * s; te[2] = tm[2] * s;
@@ -105,9 +98,9 @@ Object.assign( Mat33.prototype, {
         te[6] = tm[6] * s; te[7] = tm[7] * s; te[8] = tm[8] * s;
         return this;
 
-    },
+    }
 
-    scaleEqual: function ( s ){// multiplyScalar
+    Mat33 scaleEqual ( float s ){// multiplyScalar
 
         var te = this.elements;
         te[0] *= s; te[1] *= s; te[2] *= s;
@@ -115,9 +108,9 @@ Object.assign( Mat33.prototype, {
         te[6] *= s; te[7] *= s; te[8] *= s;
         return this;
 
-    },
+    }
 
-    multiplyMatrices: function ( m1, m2, transpose ) {
+    Mat33 multiplyMatrices ( Mat33 m1, Mat33 m2, bool transpose ) {
 
         if( transpose ) m2 = m2.clone().transpose();
 
@@ -145,9 +138,9 @@ Object.assign( Mat33.prototype, {
 
         return this;
 
-    },
+    }
 
-    /*mul: function ( m1, m2, transpose ) {
+    /*mul ( m1, m2, transpose ) {
 
         if( transpose ) m2 = m2.clone().transpose();
 
@@ -186,13 +179,7 @@ Object.assign( Mat33.prototype, {
 
     },*/
 
-    transpose: function ( m ) {
-        
-        if( m !== undefined ){
-            var a = m.elements;
-            this.set( a[0], a[3], a[6], a[1], a[4], a[7], a[2], a[5], a[8] );
-            return this;
-        }
+    Mat33 transpose () {
 
         var te = this.elements;
         var a01 = te[1], a02 = te[2], a12 = te[5];
@@ -204,11 +191,11 @@ Object.assign( Mat33.prototype, {
         te[7] = a12;
         return this;
 
-    },
+    }
 
 
 
-    /*mulScale: function ( m, sx, sy, sz, Prepend ) {
+    /*mulScale ( m, sx, sy, sz, Prepend ) {
 
         var prepend = Prepend || false;
         var te = this.elements, tm = m.elements;
@@ -225,7 +212,7 @@ Object.assign( Mat33.prototype, {
 
     },
 
-    transpose: function ( m ) {
+    transpose ( m ) {
 
         var te = this.elements, tm = m.elements;
         te[0] = tm[0]; te[1] = tm[3]; te[2] = tm[6];
@@ -235,7 +222,7 @@ Object.assign( Mat33.prototype, {
 
     },*/
 
-    setQuat: function ( q ) {
+    Mat33 setQuat ( Quat q ) {
 
         var te = this.elements;
         var x = q.x, y = q.y, z = q.z, w = q.w;
@@ -258,9 +245,9 @@ Object.assign( Mat33.prototype, {
 
         return this;
 
-    },
+    }
 
-    invert: function( m ) {
+    Mat33 invert( Mat33 m ) {
 
         var te = this.elements, tm = m.elements,
         a00 = tm[0], a10 = tm[3], a20 = tm[6],
@@ -271,7 +258,7 @@ Object.assign( Mat33.prototype, {
         b21 = a21 * a10 - a11 * a20,
         det = a00 * b01 + a01 * b11 + a02 * b21;
 
-        if ( det === 0 ) {
+        if ( det == 0 ) {
             console.log( "can't invert matrix, determinant is 0");
             return this.identity();
         }
@@ -288,9 +275,9 @@ Object.assign( Mat33.prototype, {
         te[8] = (a11 * a00 - a01 * a10) * det;
         return this;
 
-    },
+    }
 
-    addOffset: function ( m, v ) {
+    Mat33 addOffset ( Mat33 m, Vec3 v ) {
 
         var relX = v.x;
         var relY = v.y;
@@ -311,9 +298,9 @@ Object.assign( Mat33.prototype, {
         te[7] -= zx;
         return this;
 
-    },
+    }
 
-    subOffset: function ( m, v ) {
+    Mat33 subOffset ( Mat33 m, Vec3 v ) {
 
         var relX = v.x;
         var relY = v.y;
@@ -334,11 +321,11 @@ Object.assign( Mat33.prototype, {
         te[7] += zx;
         return this;
 
-    },
+    }
 
     // OK 
 
-    multiplyScalar: function ( s ) {
+    Mat33 multiplyScalar ( float s ) {
 
         var te = this.elements;
 
@@ -348,30 +335,30 @@ Object.assign( Mat33.prototype, {
 
         return this;
 
-    },
+    }
 
-    identity: function () {
+    Mat33 identity () {
 
         this.set( 1, 0, 0, 0, 1, 0, 0, 0, 1 );
         return this;
 
-    },
+    }
 
 
-    clone: function () {
+    Mat33 clone () {
 
         return new Mat33().fromArray( this.elements );
 
-    },
+    }
 
-    copy: function ( m ) {
+    Mat33 copy ( Mat33 m ) {
 
         for ( var i = 0; i < 9; i ++ ) this.elements[ i ] = m.elements[ i ];
         return this;
 
-    },
+    }
 
-    determinant: function () {
+    float determinant () {
 
         var te = this.elements;
         var a = te[ 0 ], b = te[ 1 ], c = te[ 2 ],
@@ -380,11 +367,11 @@ Object.assign( Mat33.prototype, {
 
         return a * e * i - a * f * h - b * d * i + b * f * g + c * d * h - c * e * g;
 
-    },
+    }
 
-    fromArray: function ( array, offset ) {
+    Mat33 fromArray ( float[] array, int offset ) {
 
-        if ( offset === undefined ) offset = 0;
+        if ( offset == undefined ) offset = 0;
 
         for( var i = 0; i < 9; i ++ ) {
 
@@ -394,12 +381,12 @@ Object.assign( Mat33.prototype, {
 
         return this;
 
-    },
+    }
 
-    toArray: function ( array, offset ) {
+    float[] toArray ( float[] array, int offset ) {
 
-        if ( array === undefined ) array = [];
-        if ( offset === undefined ) offset = 0;
+        if ( array == undefined ) array = [];
+        if ( offset == undefined ) offset = 0;
 
         var te = this.elements;
 
@@ -419,7 +406,4 @@ Object.assign( Mat33.prototype, {
 
     }
 
-
-} );
-
-export { Mat33 };
+}
