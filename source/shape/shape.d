@@ -19,7 +19,7 @@ int shapeIdCount() {
 }
 
 public class Proxy {
-
+    void update(){}
 }
 
 public class RigidBody{
@@ -95,7 +95,7 @@ class Shape : MassInfo {
         this.type = SHAPE_NULL;
 
         // global identification of the shape should be unique to the shape.
-        this.id = ShapeIdCount();
+        this.id = shapeIdCount();
 
         // previous shape in parent rigid body. Used for fast interations.
         this.prev = null;
@@ -110,7 +110,7 @@ class Shape : MassInfo {
         this.parent = null;
 
         // linked list of the contacts with the shape.
-        this.contactLink = null;
+        // this.contactLink = null;
 
         // number of the contacts with the shape.
         this.numContacts = 0;
