@@ -1,3 +1,5 @@
+module constraint.joint.base.translational_constraint;
+
 /**
 * A translational constraint for various joints.
 * @author saharan
