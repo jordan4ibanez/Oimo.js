@@ -1,3 +1,5 @@
+module shape.shape;
+
 import { SHAPE_NULL } from '../constants';
 import { printError } from '../core/Utils';
 import { _Math } from '../math/Math';
