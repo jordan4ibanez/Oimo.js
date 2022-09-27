@@ -1,11 +1,14 @@
 {
 	"authors": [
 		"jordan4ibanez",
-        "lo-th"
+		"lo-th"
 	],
 	"copyright": "Copyright © 2022, jordan4ibanez & lo-th",
+	"dependencies": {
+		"raylib-d": "~>4.2.2"
+	},
 	"description": "JavaScript 3D physics engine.",
+	"homepage": "http://lo-th.github.io/Oimo.js/",
 	"license": "MIT",
-	"name": "oimo",
-    "homepage": "http://lo-th.github.io/Oimo.js/"
+	"name": "oimo"
 }
