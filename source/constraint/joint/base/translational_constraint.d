@@ -4,89 +4,88 @@ module constraint.joint.base.translational_constraint;
 * A translational constraint for various joints.
 * @author saharan
 */
-function TranslationalConstraint ( joint, limitMotor ){
-    this.cfm=NaN;
-    this.m1=NaN;
-    this.m2=NaN;
-    this.i1e00=NaN;
-    this.i1e01=NaN;
-    this.i1e02=NaN;
-    this.i1e10=NaN;
-    this.i1e11=NaN;
-    this.i1e12=NaN;
-    this.i1e20=NaN;
-    this.i1e21=NaN;
-    this.i1e22=NaN;
-    this.i2e00=NaN;
-    this.i2e01=NaN;
-    this.i2e02=NaN;
-    this.i2e10=NaN;
-    this.i2e11=NaN;
-    this.i2e12=NaN;
-    this.i2e20=NaN;
-    this.i2e21=NaN;
-    this.i2e22=NaN;
-    this.motorDenom=NaN;
-    this.invMotorDenom=NaN;
-    this.invDenom=NaN;
-    this.ax=NaN;
-    this.ay=NaN;
-    this.az=NaN;
-    this.r1x=NaN;
-    this.r1y=NaN;
-    this.r1z=NaN;
-    this.r2x=NaN;
-    this.r2y=NaN;
-    this.r2z=NaN;
-    this.t1x=NaN;
-    this.t1y=NaN;
-    this.t1z=NaN;
-    this.t2x=NaN;
-    this.t2y=NaN;
-    this.t2z=NaN;
-    this.l1x=NaN;
-    this.l1y=NaN;
-    this.l1z=NaN;
-    this.l2x=NaN;
-    this.l2y=NaN;
-    this.l2z=NaN;
-    this.a1x=NaN;
-    this.a1y=NaN;
-    this.a1z=NaN;
-    this.a2x=NaN;
-    this.a2y=NaN;
-    this.a2z=NaN;
-    this.lowerLimit=NaN;
-    this.upperLimit=NaN;
-    this.limitVelocity=NaN;
-    this.limitState=0; // -1: at lower, 0: locked, 1: at upper, 2: free
-    this.enableMotor=false;
-    this.motorSpeed=NaN;
-    this.maxMotorForce=NaN;
-    this.maxMotorImpulse=NaN;
 
-    this.limitMotor=limitMotor;
-    this.b1=joint.body1;
-    this.b2=joint.body2;
-    this.p1=joint.anchorPoint1;
-    this.p2=joint.anchorPoint2;
-    this.r1=joint.relativeAnchorPoint1;
-    this.r2=joint.relativeAnchorPoint2;
-    this.l1=this.b1.linearVelocity;
-    this.l2=this.b2.linearVelocity;
-    this.a1=this.b1.angularVelocity;
-    this.a2=this.b2.angularVelocity;
-    this.i1=this.b1.inverseInertia;
-    this.i2=this.b2.inverseInertia;
-    this.limitImpulse=0;
-    this.motorImpulse=0;
-}
+public class TranslationalConstraint {
+    float cfm;
+    float m1;
+    float m2;
+    float i1e00;
+    float i1e01;
+    float i1e02;
+    float i1e10;
+    float i1e11;
+    float i1e12;
+    float i1e20;
+    float i1e21;
+    float i1e22;
+    float i2e00;
+    float i2e01;
+    float i2e02;
+    float i2e10;
+    float i2e11;
+    float i2e12;
+    float i2e20;
+    float i2e21;
+    float i2e22;
+    float motorDenom;
+    float invMotorDenom;
+    float invDenom;
+    float ax;
+    float ay;
+    float az;
+    float r1x;
+    float r1y;
+    float r1z;
+    float r2x;
+    float r2y;
+    float r2z;
+    float t1x;
+    float t1y;
+    float t1z;
+    float t2x;
+    float t2y;
+    float t2z;
+    float l1x;
+    float l1y;
+    float l1z;
+    float l2x;
+    float l2y;
+    float l2z;
+    float a1x;
+    float a1y;
+    float a1z;
+    float a2x;
+    float a2y;
+    float a2z;
+    float lowerLimit;
+    float upperLimit;
+    float limitVelocity;
+    float limitState=0; // -1: at lower, 0: locked, 1: at upper, 2: free
+    float enableMotor=false;
+    float motorSpeed;
+    float maxMotorForce;
+    float maxMotorImpulse;
+    float limitImpulse=0;
+    float motorImpulse=0;
 
-Object.assign( TranslationalConstraint.prototype, {
+    this ( Joint joint, Limit limitMotor ){
+        this.limitMotor=limitMotor;
+        this.b1=joint.body1;
+        this.b2=joint.body2;
+        this.p1=joint.anchorPoint1;
+        this.p2=joint.anchorPoint2;
+        this.r1=joint.relativeAnchorPoint1;
+        this.r2=joint.relativeAnchorPoint2;
+        this.l1=this.b1.linearVelocity;
+        this.l2=this.b2.linearVelocity;
+        this.a1=this.b1.angularVelocity;
+        this.a2=this.b2.angularVelocity;
+        this.i1=this.b1.inverseInertia;
+        this.i2=this.b2.inverseInertia;
+    }
 
-    TranslationalConstraint: true,
 
-    preSolve:function(timeStep,invTimeStep){
+    void preSolve(timeStep,invTimeStep){
         this.ax=this.limitMotor.axis.x;
         this.ay=this.limitMotor.axis.y;
         this.az=this.limitMotor.axis.z;
@@ -239,8 +238,9 @@ Object.assign( TranslationalConstraint.prototype, {
         this.a2.x-=totalImpulse*this.a2x;
         this.a2.y-=totalImpulse*this.a2y;
         this.a2.z-=totalImpulse*this.a2z;
-    },
-    solve:function(){
+    }
+
+    void solve(){
         var rvn=
             this.ax*(this.l2.x-this.l1.x)+this.ay*(this.l2.y-this.l1.y)+this.az*(this.l2.z-this.l1.z)+
             this.t2x*this.a2.x-this.t1x*this.a1.x+this.t2y*this.a2.y-this.t1y*this.a1.y+this.t2z*this.a2.z-this.t1z*this.a1.z;
@@ -281,6 +281,4 @@ Object.assign( TranslationalConstraint.prototype, {
         this.a2.y-=totalImpulse*this.a2y;
         this.a2.z-=totalImpulse*this.a2z;
     }
-} );
-
-export { TranslationalConstraint };
+}
