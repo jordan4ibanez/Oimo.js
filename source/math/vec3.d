@@ -1,6 +1,9 @@
-import { _Math } from './Math';
+module math.vec3;
 
-function Vec3 ( x, y, z ) {
+import math.math;
+
+struct Vec3 {
+function Vec3( x, y, z ) {
 
     this.x = x || 0;
     this.y = y || 0;
@@ -417,5 +420,6 @@ Object.assign( Vec3.prototype, {
 
 
 } );
+}
 
 export { Vec3 };
