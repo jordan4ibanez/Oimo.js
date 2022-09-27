@@ -58,8 +58,8 @@ public class Box : Shape {
     override
 	void updateProxy() {
 
-		var te = this.rotation.elements;
-		var di = this.dimentions;
+		float[] te = this.rotation.elements;
+		float[] di = this.dimentions;
 		// Width
 		di[0] = te[0];
 		di[1] = te[3];
@@ -85,21 +85,22 @@ public class Box : Shape {
 		di[16] = te[5] * this.halfDepth;
 		di[17] = te[8] * this.halfDepth;
 
-		var wx = di[9];
-		var wy = di[10];
-		var wz = di[11];
-		var hx = di[12];
-		var hy = di[13];
-		var hz = di[14];
-		var dx = di[15];
-		var dy = di[16];
-		var dz = di[17];
+		float wx = di[9];
+		float wy = di[10];
+		float wz = di[11];
+		float hx = di[12];
+		float hy = di[13];
+		float hz = di[14];
+		float dx = di[15];
+		float dy = di[16];
+		float dz = di[17];
 
-		var x = this.position.x;
-		var y = this.position.y;
-		var z = this.position.z;
+		float x = this.position.x;
+		float y = this.position.y;
+		float z = this.position.z;
 
-		var v = this.elements;
+		float[] v = this.elements;
+
 		//v1
 		v[0] = x + wx + hx + dx;
 		v[1] = y + wy + hy + dy;
@@ -133,9 +134,9 @@ public class Box : Shape {
 		v[22] = y - wy - hy - dy;
 		v[23] = z - wz - hz - dz;
 
-		var w = di[9] < 0 ? -di[9] : di[9];
-		var h = di[10] < 0 ? -di[10] : di[10];
-		var d = di[11] < 0 ? -di[11] : di[11];
+		float w = di[9] < 0 ? -di[9] : di[9];
+		float h = di[10] < 0 ? -di[10] : di[10];
+		float d = di[11] < 0 ? -di[11] : di[11];
 
 		w = di[12] < 0 ? w - di[12] : w + di[12];
 		h = di[13] < 0 ? h - di[13] : h + di[13];
@@ -145,7 +146,7 @@ public class Box : Shape {
 		h = di[16] < 0 ? h - di[16] : h + di[16];
 		d = di[17] < 0 ? d - di[17] : d + di[17];
 
-		var p = AABB_PROX;
+		float p = AABB_PROX;
 
 		this.aabb.set(
 			this.position.x - w - p, this.position.x + w + p,
