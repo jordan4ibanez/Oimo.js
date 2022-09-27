@@ -22,12 +22,14 @@ public class Particle : Shape {
     float volume () {
         return float.max;
     }
-
+    
+    override
     void calculateMassInfo ( Shape output ) {
         var inertia = 0;
         output.inertia.set( inertia, 0, 0, 0, inertia, 0, 0, 0, inertia );
     }
 
+    override
     void updateProxy () {
 
         var p = 0;//AABB_PROX;

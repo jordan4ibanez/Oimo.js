@@ -27,7 +27,8 @@ public class Tetra : Shape {
         this.faces = [ new Vec3(0, 1, 2), new Vec3(1, 2, 3), new Vec3(2, 3, 4), new Vec3(4, 0, 1) ];
 
     }
-
+    
+    override
     void calculateMassInfo ( Shape output ){
         // I guess you could calculate box mass and split it
         // in half for the tetra...
@@ -46,7 +47,8 @@ public class Tetra : Shape {
         );
 
     }
-
+    
+    override
     void updateProxy() {
 
         this.aabb.setFromPoints(this.verts);

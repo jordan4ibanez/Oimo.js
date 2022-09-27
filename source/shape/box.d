@@ -55,6 +55,7 @@ public class Box : Shape {
 		);
 	}
 
+    override
 	void updateProxy() {
 
 		var te = this.rotation.elements;

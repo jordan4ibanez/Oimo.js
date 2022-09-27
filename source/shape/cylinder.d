@@ -33,7 +33,8 @@ public class Cylinder : Shape {
         this.normalDirection = new Vec3();
         this.halfDirection = new Vec3();
     }
-
+    
+    override
     void calculateMassInfo ( Shape output ) {
 
         var rsq = this.radius * this.radius;
@@ -44,6 +45,7 @@ public class Cylinder : Shape {
         output.inertia.set( inertiaXZ, 0, 0,  0, inertiaY, 0,  0, 0, inertiaXZ );
     }
 
+    override
     void updateProxy () {
 
         var te = this.rotation.elements;

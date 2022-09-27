@@ -27,6 +27,7 @@ public class Plane : Shape {
         return float.max;
     }
 
+    override
     void calculateMassInfo ( Shape output ) {
 
         output.mass = this.density;//0.0001;
@@ -35,6 +36,7 @@ public class Plane : Shape {
 
     }
 
+    override
     void updateProxy () {
 
         var p = AABB_PROX;

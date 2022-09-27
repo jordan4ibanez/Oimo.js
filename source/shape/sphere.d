@@ -33,6 +33,7 @@ public class Sphere : Shape {
 
 	}
 
+    override
 	void calculateMassInfo ( Shape output ) {
 
 		var mass = this.volume() * this.radius * this.radius * this.density; //1.333 * _Math.PI * this.radius * this.radius * this.radius * this.density;
@@ -41,6 +42,7 @@ public class Sphere : Shape {
 		output.inertia.set( inertia, 0, 0, 0, inertia, 0, 0, 0, inertia );
 	}
 
+    override
 	void updateProxy () {
 
 		var p = AABB_PROX;
