@@ -19,8 +19,6 @@ public class Sphere : Shape {
 
         super(config);
 
-        Shape.call( this, config );
-
         this.type = SHAPE_SPHERE;
 
         // radius of the shape.
@@ -36,16 +34,16 @@ public class Sphere : Shape {
     override
 	void calculateMassInfo ( Shape output ) {
 
-		var mass = this.volume() * this.radius * this.radius * this.density; //1.333 * _Math.PI * this.radius * this.radius * this.radius * this.density;
+		float mass = this.volume() * this.radius * this.radius * this.density; //1.333 * _Math.PI * this.radius * this.radius * this.radius * this.density;
 		output.mass = mass;
-		var inertia = mass * this.radius * this.radius * 0.4;
+		float inertia = mass * this.radius * this.radius * 0.4;
 		output.inertia.set( inertia, 0, 0, 0, inertia, 0, 0, 0, inertia );
 	}
 
     override
 	void updateProxy () {
 
-		var p = AABB_PROX;
+		float p = AABB_PROX;
 
 		this.aabb.set(
 			this.position.x - this.radius - p, this.position.x + this.radius + p,
@@ -53,7 +51,7 @@ public class Sphere : Shape {
 			this.position.z - this.radius - p, this.position.z + this.radius + p
 		);
 
-		if ( this.proxy != null ) this.proxy.update();
+		if ( this.proxy !is null ) this.proxy.update();
 
 	}
 
