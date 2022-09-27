@@ -6,6 +6,7 @@ import math.math;
 import math.vec3;
 import math.mat33;
 import math.aabb;
+import shape.shape_config;
 
 import std.algorithm.comparison : equal;
 import std.container : DList;
@@ -55,7 +56,7 @@ class Shape {
     Mat33 rotation;
 
     // position of the shape in parent's coordinate system.
-    Vec33 relativePosition;
+    Vec3 relativePosition;
 
     // rotation matrix of the shape in parent's coordinate system.
     Mat33 relativeRotation;
