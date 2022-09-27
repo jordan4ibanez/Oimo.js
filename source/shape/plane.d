@@ -2,6 +2,7 @@ module shape.plane;
 
 import constants;
 import shape.shape;
+import shape.shape_config;
 import math.math;
 import math.vec3;
 
