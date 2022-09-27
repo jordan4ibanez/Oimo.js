@@ -1,67 +1,67 @@
+module constraint.joint.base.rotational_constraint;
+
 /**
 * A rotational constraint for various joints.
 * @author saharan
 */
 
-function RotationalConstraint ( joint, limitMotor ){
+public class RotationalConstraint {
+    float cfm;
+    float i1e00;
+    float i1e01;
+    float i1e02;
+    float i1e10;
+    float i1e11;
+    float i1e12;
+    float i1e20;
+    float i1e21;
+    float i1e22;
+    float i2e00;
+    float i2e01;
+    float i2e02;
+    float i2e10;
+    float i2e11;
+    float i2e12;
+    float i2e20;
+    float i2e21;
+    float i2e22;
+    float motorDenom;
+    float invMotorDenom;
+    float invDenom;
+    float ax;
+    float ay;
+    float az;
+    float a1x;
+    float a1y;
+    float a1z;
+    float a2x;
+    float a2y;
+    float a2z;
+    bool enableLimit=false;
+    float lowerLimit;
+    float upperLimit;
+    float limitVelocity;
+    int limitState=0; // -1: at lower, 0: locked, 1: at upper, 2: free
+    float enableMotor=false;
+    float motorSpeed;
+    float maxMotorForce;
+    float maxMotorImpulse;
 
-    this.cfm=NaN;
-    this.i1e00=NaN;
-    this.i1e01=NaN;
-    this.i1e02=NaN;
-    this.i1e10=NaN;
-    this.i1e11=NaN;
-    this.i1e12=NaN;
-    this.i1e20=NaN;
-    this.i1e21=NaN;
-    this.i1e22=NaN;
-    this.i2e00=NaN;
-    this.i2e01=NaN;
-    this.i2e02=NaN;
-    this.i2e10=NaN;
-    this.i2e11=NaN;
-    this.i2e12=NaN;
-    this.i2e20=NaN;
-    this.i2e21=NaN;
-    this.i2e22=NaN;
-    this.motorDenom=NaN;
-    this.invMotorDenom=NaN;
-    this.invDenom=NaN;
-    this.ax=NaN;
-    this.ay=NaN;
-    this.az=NaN;
-    this.a1x=NaN;
-    this.a1y=NaN;
-    this.a1z=NaN;
-    this.a2x=NaN;
-    this.a2y=NaN;
-    this.a2z=NaN;
-    this.enableLimit=false;
-    this.lowerLimit=NaN;
-    this.upperLimit=NaN;
-    this.limitVelocity=NaN;
-    this.limitState=0; // -1: at lower, 0: locked, 1: at upper, 2: free
-    this.enableMotor=false;
-    this.motorSpeed=NaN;
-    this.maxMotorForce=NaN;
-    this.maxMotorImpulse=NaN;
+    int limitImpulse=0;
+    int motorImpulse=0;
+    this ( Joint joint, LimitMotor limitMotor ){
 
-    this.limitMotor=limitMotor;
-    this.b1=joint.body1;
-    this.b2=joint.body2;
-    this.a1=this.b1.angularVelocity;
-    this.a2=this.b2.angularVelocity;
-    this.i1=this.b1.inverseInertia;
-    this.i2=this.b2.inverseInertia;
-    this.limitImpulse=0;
-    this.motorImpulse=0;
-}
+        this.limitMotor=limitMotor;
+        this.b1=joint.body1;
+        this.b2=joint.body2;
+        this.a1=this.b1.angularVelocity;
+        this.a2=this.b2.angularVelocity;
+        this.i1=this.b1.inverseInertia;
+        this.i2=this.b2.inverseInertia;
+        
+    }
 
-Object.assign( RotationalConstraint.prototype, {
-
-    RotationalConstraint: true,
-
-    preSolve:function(timeStep,invTimeStep){
+    void preSolve(timeStep,invTimeStep){
         this.ax=this.limitMotor.axis.x;
         this.ay=this.limitMotor.axis.y;
         this.az=this.limitMotor.axis.z;
@@ -71,8 +71,8 @@ Object.assign( RotationalConstraint.prototype, {
         this.maxMotorForce=this.limitMotor.maxMotorForce;
         this.enableMotor=this.maxMotorForce>0;
 
-        var ti1 = this.i1.elements;
-        var ti2 = this.i2.elements;
+        float[] ti1 = this.i1.elements;
+        float[] ti2 = this.i2.elements;
         this.i1e00=ti1[0];
         this.i1e01=ti1[1];
         this.i1e02=ti1[2];
@@ -93,10 +93,10 @@ Object.assign( RotationalConstraint.prototype, {
         this.i2e21=ti2[7];
         this.i2e22=ti2[8];
 
-        var frequency=this.limitMotor.frequency;
-        var enableSpring=frequency>0;
-        var enableLimit=this.lowerLimit<=this.upperLimit;
-        var angle=this.limitMotor.angle;
+        float frequency=this.limitMotor.frequency;
+        bool enableSpring=frequency>0;
+        bool enableLimit=this.lowerLimit<=this.upperLimit;
+        float angle=this.limitMotor.angle;
         if(enableLimit){
             if(this.lowerLimit==this.upperLimit){
                 if(this.limitState!=0){
@@ -147,9 +147,9 @@ Object.assign( RotationalConstraint.prototype, {
         this.invMotorDenom=1/this.motorDenom;
 
         if(enableSpring&&this.limitState!=2){
-            var omega=6.2831853*frequency;
-            var k=omega*omega*timeStep;
-            var dmp=invTimeStep/(k+2*this.limitMotor.dampingRatio*omega);
+            float omega=6.2831853*frequency;
+            float k=omega*omega*timeStep;
+            vfloatar dmp=invTimeStep/(k+2*this.limitMotor.dampingRatio*omega);
             this.cfm=this.motorDenom*dmp;
             this.limitVelocity*=k*dmp;
         }else{
@@ -161,24 +161,24 @@ Object.assign( RotationalConstraint.prototype, {
         
         this.limitImpulse*=0.95;
         this.motorImpulse*=0.95;
-        var totalImpulse=this.limitImpulse+this.motorImpulse;
+        float totalImpulse=this.limitImpulse+this.motorImpulse;
         this.a1.x+=totalImpulse*this.a1x;
         this.a1.y+=totalImpulse*this.a1y;
         this.a1.z+=totalImpulse*this.a1z;
         this.a2.x-=totalImpulse*this.a2x;
         this.a2.y-=totalImpulse*this.a2y;
         this.a2.z-=totalImpulse*this.a2z;
-    },
+    }
 
-    solve:function(){
+    void solve(){
 
-        var rvn=this.ax*(this.a2.x-this.a1.x)+this.ay*(this.a2.y-this.a1.y)+this.az*(this.a2.z-this.a1.z);
+        float rvn=this.ax*(this.a2.x-this.a1.x)+this.ay*(this.a2.y-this.a1.y)+this.az*(this.a2.z-this.a1.z);
 
         // motor part
-        var newMotorImpulse;
+        float newMotorImpulse;
         if(this.enableMotor){
             newMotorImpulse=(rvn-this.motorSpeed)*this.invMotorDenom;
-            var oldMotorImpulse=this.motorImpulse;
+            float oldMotorImpulse=this.motorImpulse;
             this.motorImpulse+=newMotorImpulse;
             if(this.motorImpulse>this.maxMotorImpulse)this.motorImpulse=this.maxMotorImpulse;
             else if(this.motorImpulse<-this.maxMotorImpulse)this.motorImpulse=-this.maxMotorImpulse;
@@ -187,16 +187,16 @@ Object.assign( RotationalConstraint.prototype, {
         }else newMotorImpulse=0;
 
         // limit part
-        var newLimitImpulse;
+        float newLimitImpulse;
         if(this.limitState!=2){
             newLimitImpulse=(rvn-this.limitVelocity-this.limitImpulse*this.cfm)*this.invDenom;
-            var oldLimitImpulse=this.limitImpulse;
+            float oldLimitImpulse=this.limitImpulse;
             this.limitImpulse+=newLimitImpulse;
             if(this.limitImpulse*this.limitState<0)this.limitImpulse=0;
             newLimitImpulse=this.limitImpulse-oldLimitImpulse;
         }else newLimitImpulse=0;
 
-        var totalImpulse=newLimitImpulse+newMotorImpulse;
+        float totalImpulse=newLimitImpulse+newMotorImpulse;
         this.a1.x+=totalImpulse*this.a1x;
         this.a1.y+=totalImpulse*this.a1y;
         this.a1.z+=totalImpulse*this.a1z;
@@ -206,6 +206,4 @@ Object.assign( RotationalConstraint.prototype, {
 
     }
 
-} );
-
-export { RotationalConstraint };
+}
