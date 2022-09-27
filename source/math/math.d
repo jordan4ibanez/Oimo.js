@@ -24,6 +24,19 @@ private static struct LMath {
     float EPZ      = 0.00001;
     float EPZ2     = 0.000001;
 
+    alias sqrt   = IMath.sqrt;
+    alias abs    = IMath.abs;
+    alias floor  = IMath.floor;
+    alias cos    = IMath.cos;
+    alias sin    = IMath.sin;
+    alias acos   = IMath.acos;
+    alias asin   = IMath.asin;
+    alias atan2  = IMath.atan2;
+    alias round  = IMath.round;
+    alias pow    = IMath.pow;
+    alias max    = Comparison.max;
+    alias min    = Comparison.min;
+
 
     float lerp( float x, float y, float t ) { 
         return ( 1 - t ) * x + t * y;
@@ -64,9 +77,9 @@ private static struct LMath {
     //clamp: function ( x, a, b ) { return ( x < a ) ? a : ( ( x > b ) ? b : x ); },
     float distance( float[] p1, float[] p2 ){
 
-        var xd = p2[0]-p1[0];
-        var yd = p2[1]-p1[1];
-        var zd = p2[2]-p1[2];
+        float xd = p2[0]-p1[0];
+        float yd = p2[1]-p1[1];
+        float zd = p2[2]-p1[2];
         return IMath.sqrt(xd*xd + yd*yd + zd*zd);
     }
 

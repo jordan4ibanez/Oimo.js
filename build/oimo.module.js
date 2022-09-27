@@ -1105,8 +1105,8 @@ Object.assign( Quat.prototype, {
             var k = (i+2)%3;
             
             s = _Math.sqrt( m[i*3+i] - m[j*3+j] - m[k*3+k] + 1.0 );
-            out[i] = 0.5 * fRoot;
-            s = 0.5 / fRoot;
+            out[i] = 0.5 * root;
+            s = 0.5 / root;
             this.w = ( m[j*3+k] - m[k*3+j] ) * s;
             out[j] = ( m[j*3+i] + m[i*3+j] ) * s;
             out[k] = ( m[k*3+i] + m[i*3+k] ) * s;

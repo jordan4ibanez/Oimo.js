@@ -178,7 +178,7 @@ struct Vec3 {
 
     Vec3 tangent ( Vec3 a ) {
 
-        var ax = a.x, ay = a.y, az = a.z;
+        float ax = a.x, ay = a.y, az = a.z;
 
         this.x = ay * ax - az * az;
         this.y = - az * ay - ax * ax;
@@ -204,25 +204,25 @@ struct Vec3 {
 
     }
 
-    Vec3 dot ( Vec3 v ) {
+    float dot ( Vec3 v ) {
 
         return this.x * v.x + this.y * v.y + this.z * v.z;
     }
 
-    Vec3 addition () {
+    float addition () {
 
         return this.x + this.y + this.z;
 
     }
 
-    Vec3 lengthSq () {
+    float lengthSq () {
 
         return this.x * this.x + this.y * this.y + this.z * this.z;
 
     }
 
-    Vec3 length () {
-        return Math.sqrt( this.x * this.x + this.y * this.y + this.z * this.z );
+    float length () {
+        return _Math.sqrt( this.x * this.x + this.y * this.y + this.z * this.z );
     }
 
     Vec3 copy ( Vec3 v ) {
@@ -254,7 +254,7 @@ struct Vec3 {
 
         //if( transpose ) m = m.clone().transpose();
         float x1 = this.x, y1 = this.y, z1 = this.z;
-        int e = m.elements;
+        float[] e = m.elements;
 
         if( transpose ){
             
@@ -275,21 +275,21 @@ struct Vec3 {
 
     Vec3 applyQuaternion ( Quat q ) {
 
-        var x1 = this.x;
-        var y1 = this.y;
-        var z1 = this.z;
+        float x1 = this.x;
+        float y1 = this.y;
+        float z1 = this.z;
 
-        var qx = q.x;
-        var qy = q.y;
-        var qz = q.z;
-        var qw = q.w;
+        float qx = q.x;
+        float qy = q.y;
+        float qz = q.z;
+        float qw = q.w;
 
         // calculate quat * vector
 
-        var ix =  qw * x1 + qy * z1 - qz * y1;
-        var iy =  qw * y1 + qz * x1 - qx * z1;
-        var iz =  qw * z1 + qx * y1 - qy * x1;
-        var iw = - qx * x1 - qy * y1 - qz * z1;
+        float ix =  qw * x1 + qy * z1 - qz * y1;
+        float iy =  qw * y1 + qz * x1 - qx * z1;
+        float iz =  qw * z1 + qx * y1 - qy * x1;
+        float iw = - qx * x1 - qy * y1 - qz * z1;
 
         // calculate result * inverse quat
 
@@ -354,7 +354,7 @@ struct Vec3 {
 
     }
 
-    float[] toArray ( float[] array, int offset ) {
+    void toArray ( float[] array, int offset ) {
         array[ offset ] = this.x;
         array[ offset + 1 ] = this.y;
         array[ offset + 2 ] = this.z;

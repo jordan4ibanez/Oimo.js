@@ -3,6 +3,7 @@ module math.quat;
 import math.math;
 import math.vec3;
 import math.mat33;
+import math.aabb;
 
 struct Quat {
 
@@ -10,6 +11,11 @@ struct Quat {
     float y = 0;
     float z = 0;
     float w = 1;
+
+    float _x = 0;
+    float _y = 0;
+    float _z = 0;
+    float _w = 1;
 
     this( float x, float y, float z, float w ){
         this.x = x || 0;
@@ -68,8 +74,8 @@ struct Quat {
 
     Quat multiplyQuaternions ( Quat a, Quat b ) {
 
-        var qax = a.x, qay = a.y, qaz = a.z, qaw = a.w;
-        var qbx = b.x, qby = b.y, qbz = b.z, qbw = b.w;
+        float qax = a.x, qay = a.y, qaz = a.z, qaw = a.w;
+        float qbx = b.x, qby = b.y, qbz = b.z, qbw = b.w;
 
         this.x = qax * qbw + qaw * qbx + qay * qbz - qaz * qby;
         this.y = qay * qbw + qaw * qby + qaz * qbx - qax * qbz;
@@ -81,10 +87,10 @@ struct Quat {
 
     Quat setFromUnitVectors( Vec3 v1, Vec3 v2 ) {
 
-        var vx = new Vec3();
-        var r = v1.dot( v2 ) + 1;
+        Vec3 vx = Vec3();
+        float r = v1.dot( v2 ) + 1;
 
-        if ( r < _Math.EPS2 ) {
+        if ( r < _Math.EPZ2 ) {
 
             r = 0;
             if ( _Math.abs( v1.x ) > _Math.abs( v1.z ) ) vx.set( - v1.y, v1.x, 0 );
@@ -107,13 +113,13 @@ struct Quat {
 
     Quat arc( Vec3 v1, Vec3 v2 ){
 
-        var x1 = v1.x;
-        var y1 = v1.y;
-        var z1 = v1.z;
-        var x2 = v2.x;
-        var y2 = v2.y;
-        var z2 = v2.z;
-        var d = x1*x2 + y1*y2 + z1*z2;
+        float  x1 = v1.x;
+        float  y1 = v1.y;
+        float  z1 = v1.z;
+        float  x2 = v2.x;
+        float  y2 = v2.y;
+        float  z2 = v2.z;
+        float  d = x1*x2 + y1*y2 + z1*z2;
         if( d==-1 ){
             x2 = y1*x1 - z1*z1;
             y2 = -z1*y1 - x1*x1;
@@ -125,9 +131,9 @@ struct Quat {
             this.z = z2*d;
             return this;
         }
-        var cx = y1*z2 - z1*y2;
-        var cy = z1*x2 - x1*z2;
-        var cz = x1*y2 - y1*x2;
+        float  cx = y1*z2 - z1*y2;
+        float  cy = z1*x2 - x1*z2;
+        float  cz = x1*y2 - y1*x2;
         this.w = _Math.sqrt( ( 1 + d) * 0.5 );
         d = 0.5 / this.w;
         this.x = cx * d;
@@ -221,12 +227,12 @@ struct Quat {
 
     Quat setFromEuler ( float x, float y, float z ){
 
-        var c1 = Math.cos( x * 0.5 );
-        var c2 = Math.cos( y * 0.5 );
-        var c3 = Math.cos( z * 0.5 );
-        var s1 = Math.sin( x * 0.5 );
-        var s2 = Math.sin( y * 0.5 );
-        var s3 = Math.sin( z * 0.5 );
+        float  c1 = _Math.cos( x * 0.5 );
+        float  c2 = _Math.cos( y * 0.5 );
+        float  c3 = _Math.cos( z * 0.5 );
+        float  s1 = _Math.sin( x * 0.5 );
+        float  s2 = _Math.sin( y * 0.5 );
+        float  s3 = _Math.sin( z * 0.5 );
 
         // XYZ
         this.x = s1 * c2 * c3 + c1 * s2 * s3;
@@ -238,11 +244,11 @@ struct Quat {
 
     }
     
-    Quat setFromAxis ( AABB axis, float rad ) {
+    Quat setFromAxis ( Vec3 axis, float rad ) {
 
         axis.normalize();
         rad = rad * 0.5;
-        var s = _Math.sin( rad );
+        float s = _Math.sin( rad );
         this.x = s * axis.x;
         this.y = s * axis.y;
         this.z = s * axis.z;
@@ -253,7 +259,7 @@ struct Quat {
 
     Quat setFromMat33 ( Mat33 m ) {
 
-        float trace = m[0] + m[4] + m[8];
+        float trace = m.elements[0] + m.elements[4] + m.elements[8];
         float s;
 
         if ( trace > 0 ) {
@@ -261,26 +267,26 @@ struct Quat {
             s = _Math.sqrt( trace + 1.0 );
             this.w = 0.5 / s;
             s = 0.5 / s;
-            this.x = ( m[5] - m[7] ) * s;
-            this.y = ( m[6] - m[2] ) * s;
-            this.z = ( m[1] - m[3] ) * s;
+            this.x = ( m.elements[5] - m.elements[7] ) * s;
+            this.y = ( m.elements[6] - m.elements[2] ) * s;
+            this.z = ( m.elements[1] - m.elements[3] ) * s;
 
         } else {
 
             float[] out_ = new float[16];
             int i = 0;
-            if ( m[4] > m[0] ) i = 1;
-            if ( m[8] > m[i*3+i] ) i = 2;
+            if ( m.elements[4] > m.elements[0] ) i = 1;
+            if ( m.elements[8] > m.elements[i*3+i] ) i = 2;
 
-            var j = (i+1)%3;
-            var k = (i+2)%3;
+            int j = (i+1)%3;
+            int k = (i+2)%3;
             
-            s = _Math.sqrt( m[i*3+i] - m[j*3+j] - m[k*3+k] + 1.0 );
-            out_[i] = 0.5 * fRoot;
-            s = 0.5 / fRoot;
-            this.w = ( m[j*3+k] - m[k*3+j] ) * s;
-            out_[j] = ( m[j*3+i] + m[i*3+j] ) * s;
-            out_[k] = ( m[k*3+i] + m[i*3+k] ) * s;
+            s = _Math.sqrt( m.elements[i*3+i] - m.elements[j*3+j] - m.elements[k*3+k] + 1.0 );
+            out_[i] = 0.5 * 1;
+            s = 0.5 / 1;
+            this.w = ( m.elements[j*3+k] - m.elements[k*3+j] ) * s;
+            out_[j] = ( m.elements[j*3+i] + m.elements[i*3+j] ) * s;
+            out_[k] = ( m.elements[k*3+i] + m.elements[i*3+k] ) * s;
 
             this.x = out_[1];
             this.y = out_[2];
@@ -292,7 +298,7 @@ struct Quat {
 
     }
 
-    float[] toArray ( float[] array, int offset ) {
+    void toArray ( float[] array, int offset ) {
 
         offset = offset || 0;
 
