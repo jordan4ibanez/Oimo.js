@@ -2,6 +2,7 @@ module math.vec3;
 
 import math.math;
 import math.quat;
+import math.mat33;
 
 struct Vec3 {
     float x = 0;

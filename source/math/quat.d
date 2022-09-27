@@ -2,6 +2,7 @@ module math.quat;
 
 import math.math;
 import math.vec3;
+import math.mat33;
 
 struct Quat {
 
