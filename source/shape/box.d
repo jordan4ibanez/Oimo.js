@@ -1,6 +1,6 @@
 module shape.box;
 
-import src.constants;
+import constants;
 import shape.shape;
 import shape.shape_config;
 import math.vec3;

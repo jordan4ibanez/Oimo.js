@@ -1,7 +1,7 @@
 module shape.shape;
 
 
-import src.constants;
+import constants;
 import math.math;
 import math.vec3;
 import math.mat33;
