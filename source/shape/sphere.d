@@ -4,6 +4,7 @@ import constants;
 import shape.shape;
 import shape.shape_config;
 import math.math;
+import shape.mass_info;
 
 /**
  * Sphere shape
@@ -32,7 +33,7 @@ public class Sphere : Shape {
 	}
 
     override
-	void calculateMassInfo ( Shape output ) {
+	void calculateMassInfo ( MassInfo output ) {
 
 		float mass = this.volume() * this.radius * this.radius * this.density; //1.333 * _Math.PI * this.radius * this.radius * this.radius * this.density;
 		output.mass = mass;

@@ -5,6 +5,7 @@ import shape.shape;
 import math.math;
 import math.vec3;
 import shape.shape_config;
+import shape.mass_info;
 
 /**
  * A Particule shape
@@ -24,7 +25,7 @@ public class Particle : Shape {
     }
     
     override
-    void calculateMassInfo ( Shape output ) {
+    void calculateMassInfo ( MassInfo output ) {
         float inertia = 0;
         output.inertia.set( inertia, 0, 0, 0, inertia, 0, 0, 0, inertia );
     }

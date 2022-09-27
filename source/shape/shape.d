@@ -8,6 +8,7 @@ import math.mat33;
 import math.aabb;
 import shape.shape_config;
 import shape.mass_info;
+import core.rigid_body;
 
 import std.algorithm.comparison : equal;
 import std.container : DList;
@@ -20,10 +21,6 @@ int shapeIdCount() {
 
 public class Proxy {
     void update(){}
-}
-
-public class RigidBody{
-    
 }
 
 /**
@@ -151,7 +148,7 @@ class Shape : MassInfo {
 
     // Calculate the mass information of the shape.
 
-    void calculateMassInfo ( Shape output ){
+    void calculateMassInfo ( MassInfo output ){
 
         throw new Exception("Shape Inheritance error.");
 

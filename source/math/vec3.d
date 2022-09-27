@@ -46,7 +46,7 @@ class Vec3 {
         return this;
     }
 
-    Vec3 sub ( Vec3 a, Vec3 b ) {
+    Vec3 sub ( Vec3 a) {
         this.x -= a.x;
         this.y -= a.y;
         this.z -= a.z;

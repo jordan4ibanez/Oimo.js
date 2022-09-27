@@ -5,6 +5,8 @@ import shape.shape;
 import shape.shape_config;
 import math.math;
 import math.vec3;
+import shape.mass_info;
+
 
 /**
  * Plane shape.
@@ -29,7 +31,7 @@ public class Plane : Shape {
     }
 
     override
-    void calculateMassInfo ( Shape output ) {
+    void calculateMassInfo ( MassInfo output ) {
 
         output.mass = this.density;//0.0001;
         float inertia = 1;

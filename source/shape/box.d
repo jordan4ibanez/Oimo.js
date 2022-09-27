@@ -4,7 +4,7 @@ import constants;
 import shape.shape;
 import shape.shape_config;
 import math.vec3;
-
+import shape.mass_info;
 
 /**
  * Box shape.
@@ -44,7 +44,7 @@ public class Box : Shape {
     }
 
     override
-	void calculateMassInfo ( Shape output ) {
+	void calculateMassInfo ( MassInfo output ) {
 
 		float mass = this.width * this.height * this.depth * this.density;
 		float divid = 1/12;

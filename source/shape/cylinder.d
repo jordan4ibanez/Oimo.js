@@ -5,6 +5,7 @@ import shape.shape;
 import shape.shape_config;
 import math.math;
 import math.vec3;
+import shape.mass_info;
 
 /**
  * Cylinder shape
@@ -35,7 +36,7 @@ public class Cylinder : Shape {
     }
     
     override
-    void calculateMassInfo ( Shape output ) {
+    void calculateMassInfo ( MassInfo output ) {
 
         float rsq = this.radius * this.radius;
         float mass = _Math.PI * rsq * this.height * this.density;

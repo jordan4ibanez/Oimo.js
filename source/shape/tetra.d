@@ -4,6 +4,7 @@ import constants;
 import shape.shape;
 import shape.shape_config;
 import math.vec3;
+import shape.mass_info;
 
 /**
  * A tetra shape.
@@ -29,7 +30,7 @@ public class Tetra : Shape {
     }
     
     override
-    void calculateMassInfo ( Shape output ){
+    void calculateMassInfo ( MassInfo output ){
         // I guess you could calculate box mass and split it
         // in half for the tetra...
         this.aabb.setFromPoints(this.verts);
