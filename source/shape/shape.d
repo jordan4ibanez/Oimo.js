@@ -1,14 +1,20 @@
 module shape.shape;
 
-import { SHAPE_NULL } from '../constants';
-import { printError } from '../core/Utils';
-import { _Math } from '../math/Math';
-import { Vec3 } from '../math/Vec3';
-import { Mat33 } from '../math/Mat33';
-import { AABB } from '../math/AABB';
 
-var count = 0;
-function ShapeIdCount() { return count++; }
+import src.constants;
+import math.math;
+import math.vec3;
+import math.mat33;
+import math.aabb;
+
+import std.algorithm.comparison : equal;
+import std.container : DList;
+
+private int count = 0;
+
+int shapeIdCount() {
+    return count++;
+}
 
 /**
  * A shape is used to detect collisions of rigid bodies.
@@ -17,83 +23,133 @@ function ShapeIdCount() { return count++; }
  * @author lo-th
  */
 
-function Shape ( config ) {
+class Shape {
 
-    this.type = SHAPE_NULL;
+    int type;
 
     // global identification of the shape should be unique to the shape.
-    this.id = ShapeIdCount();
+    int id;
 
     // previous shape in parent rigid body. Used for fast interations.
-    this.prev = null;
+    Shape prev;
 
     // next shape in parent rigid body. Used for fast interations.
-    this.next = null;
+    Shape next;
 
     // proxy of the shape used for broad-phase collision detection.
-    this.proxy = null;
+    Proxy proxy;
 
     // parent rigid body of the shape.
-    this.parent = null;
+    RigidBody parent;
 
     // linked list of the contacts with the shape.
-    this.contactLink = null;
+    DList!Shape contactLink;
 
     // number of the contacts with the shape.
-    this.numContacts = 0;
+    int numContacts;
 
     // center of gravity of the shape in world coordinate system.
-    this.position = new Vec3();
+    Vec3 position;
 
     // rotation matrix of the shape in world coordinate system.
-    this.rotation = new Mat33();
+    Mat33 rotation;
 
     // position of the shape in parent's coordinate system.
-    this.relativePosition = new Vec3().copy( config.relativePosition );
+    Vec33 relativePosition;
 
     // rotation matrix of the shape in parent's coordinate system.
-    this.relativeRotation = new Mat33().copy( config.relativeRotation );
+    Mat33 relativeRotation;
 
     // axis-aligned bounding box of the shape.
-    this.aabb = new AABB();
+    AABB aabb;
 
     // density of the shape.
-    this.density = config.density;
+    float density;
 
     // coefficient of friction of the shape.
-    this.friction = config.friction;
+    float friction;
 
     // coefficient of restitution of the shape.
-    this.restitution = config.restitution;
+    float restitution;
 
     // bits of the collision groups to which the shape belongs.
-    this.belongsTo = config.belongsTo;
+    int belongsTo;
 
     // bits of the collision groups with which the shape collides.
-    this.collidesWith = config.collidesWith;
+    int collidesWith;
 
-};
+    this(ShapeConfig config) {
 
-Object.assign( Shape.prototype, {
+        this.type = SHAPE_NULL;
 
-    Shape: true,
+        // global identification of the shape should be unique to the shape.
+        this.id = ShapeIdCount();
 
-    // Calculate the mass information of the shape.
+        // previous shape in parent rigid body. Used for fast interations.
+        this.prev = null;
 
-    calculateMassInfo: function( out ){
+        // next shape in parent rigid body. Used for fast interations.
+        this.next = null;
 
-        printError("Shape", "Inheritance error.");
+        // proxy of the shape used for broad-phase collision detection.
+        this.proxy = null;
 
-    },
+        // parent rigid body of the shape.
+        this.parent = null;
 
-    // Update the proxy of the shape.
+        // linked list of the contacts with the shape.
+        this.contactLink = null;
 
-    updateProxy: function(){
+        // number of the contacts with the shape.
+        this.numContacts = 0;
 
-        printError("Shape", "Inheritance error.");
+        // center of gravity of the shape in world coordinate system.
+        this.position = new Vec3();
+
+        // rotation matrix of the shape in world coordinate system.
+        this.rotation = new Mat33();
+
+        // position of the shape in parent's coordinate system.
+        this.relativePosition = new Vec3().copy( config.relativePosition );
+
+        // rotation matrix of the shape in parent's coordinate system.
+        this.relativeRotation = new Mat33().copy( config.relativeRotation );
+
+        // axis-aligned bounding box of the shape.
+        this.aabb = new AABB();
+
+        // density of the shape.
+        this.density = config.density;
+
+        // coefficient of friction of the shape.
+        this.friction = config.friction;
+
+        // coefficient of restitution of the shape.
+        this.restitution = config.restitution;
+
+        // bits of the collision groups to which the shape belongs.
+        this.belongsTo = config.belongsTo;
+
+        // bits of the collision groups with which the shape collides.
+        this.collidesWith = config.collidesWith;
 
     }
 
-});
+    /// D translation notes: These are overrides
 
-export { Shape };
+    // Calculate the mass information of the shape.
+
+    void calculateMassInfo ( float output ){
+
+        throw new Exception("Shape Inheritance error.");
+
+    }
+
+    // Update the proxy of the shape.
+
+    void updateProxy(){
+
+        throw new Exception("Shape Inheritance error.");
+
+    }
+}
