@@ -88,8 +88,8 @@ public class LinearConstraint {
         this.ii1 = this.i1.clone();
         this.ii2 = this.i2.clone();
 
-        var ii1 = this.ii1.elements;
-        var ii2 = this.ii2.elements;
+        float ii1 = this.ii1.elements;
+        float ii2 = this.ii2.elements;
 
         this.ax1x = this.r1z*ii1[1]+-this.r1y*ii1[2];
         this.ax1y = this.r1z*ii1[4]+-this.r1y*ii1[5];
@@ -127,10 +127,10 @@ public class LinearConstraint {
         // 
         // [/I] = Inverted moment inertia
 
-        var rxx = this.m1+this.m2;
+        float rxx = this.m1+this.m2;
 
-        var kk = new Mat33().set( rxx, 0, 0,  0, rxx, 0,  0, 0, rxx );
-        var k = kk.elements;
+        float kk = new Mat33().set( rxx, 0, 0,  0, rxx, 0,  0, 0, rxx );
+        float[] k = kk.elements;
 
         k[0] += ii1[4]*this.r1z*this.r1z-(ii1[7]+ii1[5])*this.r1y*this.r1z+ii1[8]*this.r1y*this.r1y;
         k[1] += (ii1[6]*this.r1y+ii1[5]*this.r1x)*this.r1z-ii1[3]*this.r1z*this.r1z-ii1[8]*this.r1x*this.r1y;
@@ -152,7 +152,7 @@ public class LinearConstraint {
         k[7] += (ii2[3]*this.r2x-ii2[0]*this.r2y)*this.r2z-ii2[5]*this.r2x*this.r2x+ii2[2]*this.r2x*this.r2y;
         k[8] += ii2[0]*this.r2y*this.r2y-(ii2[3]+ii2[1])*this.r2x*this.r2y+ii2[4]*this.r2x*this.r2x;
 
-        var inv=1/( k[0]*(k[4]*k[8]-k[7]*k[5]) + k[3]*(k[7]*k[2]-k[1]*k[8]) + k[6]*(k[1]*k[5]-k[4]*k[2]) );
+        float inv=1/( k[0]*(k[4]*k[8]-k[7]*k[5]) + k[3]*(k[7]*k[2]-k[1]*k[8]) + k[6]*(k[1]*k[5]-k[4]*k[2]) );
         this.dd = new Mat33().set(
             k[4]*k[8]-k[5]*k[7], k[2]*k[7]-k[1]*k[8], k[1]*k[5]-k[2]*k[4],
             k[5]*k[6]-k[3]*k[8], k[0]*k[8]-k[2]*k[6], k[2]*k[3]-k[0]*k[5],
@@ -162,7 +162,7 @@ public class LinearConstraint {
         this.velx = this.p2.x-this.p1.x;
         this.vely = this.p2.y-this.p1.y;
         this.velz = this.p2.z-this.p1.z;
-        var len = _Math.sqrt(this.velx*this.velx+this.vely*this.vely+this.velz*this.velz);
+        float len = _Math.sqrt(this.velx*this.velx+this.vely*this.vely+this.velz*this.velz);
         if(len>0.005){
             len = (0.005-len)/len*invTimeStep*0.05;
             this.velx *= len;
@@ -194,13 +194,13 @@ public class LinearConstraint {
 
     void solve () {
 
-        var d = this.dd.elements;
-        var rvx = this.l2.x-this.l1.x+this.a2.y*this.r2z-this.a2.z*this.r2y-this.a1.y*this.r1z+this.a1.z*this.r1y-this.velx;
-        var rvy = this.l2.y-this.l1.y+this.a2.z*this.r2x-this.a2.x*this.r2z-this.a1.z*this.r1x+this.a1.x*this.r1z-this.vely;
-        var rvz = this.l2.z-this.l1.z+this.a2.x*this.r2y-this.a2.y*this.r2x-this.a1.x*this.r1y+this.a1.y*this.r1x-this.velz;
-        var nimpx = rvx*d[0]+rvy*d[1]+rvz*d[2];
-        var nimpy = rvx*d[3]+rvy*d[4]+rvz*d[5];
-        var nimpz = rvx*d[6]+rvy*d[7]+rvz*d[8];
+        float[] d = this.dd.elements;
+        float rvx = this.l2.x-this.l1.x+this.a2.y*this.r2z-this.a2.z*this.r2y-this.a1.y*this.r1z+this.a1.z*this.r1y-this.velx;
+        float rvy = this.l2.y-this.l1.y+this.a2.z*this.r2x-this.a2.x*this.r2z-this.a1.z*this.r1x+this.a1.x*this.r1z-this.vely;
+        float rvz = this.l2.z-this.l1.z+this.a2.x*this.r2y-this.a2.y*this.r2x-this.a1.x*this.r1y+this.a1.y*this.r1x-this.velz;
+        float nimpx = rvx*d[0]+rvy*d[1]+rvz*d[2];
+        float nimpy = rvx*d[3]+rvy*d[4]+rvz*d[5];
+        float nimpz = rvx*d[6]+rvy*d[7]+rvz*d[8];
         this.impx += nimpx;
         this.impy += nimpy;
         this.impz += nimpz;
