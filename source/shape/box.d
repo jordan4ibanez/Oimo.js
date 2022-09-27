@@ -21,7 +21,7 @@ public class Box : Shape {
     float halfHeight;
     float halfDepth;
 
-    float[] dimensions;
+    float[] dimentions;
     float[] elements;
 
     this ( ShapeConfig config, float Width, float Height, float Depth ) {
@@ -43,10 +43,11 @@ public class Box : Shape {
 
     }
 
-	void calculateMassInfo ( Box output ) {
+    override
+	void calculateMassInfo ( Shape output ) {
 
-		var mass = this.width * this.height * this.depth * this.density;
-		var divid = 1/12;
+		float mass = this.width * this.height * this.depth * this.density;
+		float divid = 1/12;
 		output.mass = mass;
 		output.inertia.set(
 			mass * ( this.height * this.height + this.depth * this.depth ) * divid, 0, 0,
@@ -154,7 +155,7 @@ public class Box : Shape {
 			this.position.z - d - p, this.position.z + d + p
 		);
 
-		if ( this.proxy != null ) this.proxy.update();
+		if ( this.proxy !is null ) this.proxy.update();
 
 	}
 }
