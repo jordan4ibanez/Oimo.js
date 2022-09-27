@@ -1,11 +1,10 @@
 module shape.cylinder;
 
-import { SHAPE_CYLINDER, AABB_PROX } from '../constants';
-import { Shape } from './Shape';
-import { _Math } from '../math/Math';
-import { Vec3 } from '../math/Vec3';
-
 import constants;
+import shape.shape;
+import shape.shape_config;
+import math.math;
+import math.vec3;
 
 /**
  * Cylinder shape
@@ -13,37 +12,39 @@ import constants;
  * @author lo-th
  */
 
-function Cylinder ( config, radius, height ) {
+public class Cylinder : Shape {
 
-    Shape.call( this, config );
+    float radius;
+    float height;
+    float halfHeight;
+    Vec3 normalDirection;
+    Vec3 halfDirection;
 
-    this.type = SHAPE_CYLINDER;
+    this ( ShapeConfig config, float radius, float height ) {
 
-    this.radius = radius;
-    this.height = height;
-    this.halfHeight = height * 0.5;
+        super(config);
 
-    this.normalDirection = new Vec3();
-    this.halfDirection = new Vec3();
+        this.type = SHAPE_CYLINDER;
 
-};
+        this.radius = radius;
+        this.height = height;
+        this.halfHeight = height * 0.5;
 
-Cylinder.prototype = Object.assign( Object.create( Shape.prototype ), {
+        this.normalDirection = new Vec3();
+        this.halfDirection = new Vec3();
+    }
 
-    constructor: Cylinder,
-
-    calculateMassInfo: function ( out ) {
+    void calculateMassInfo ( Shape output ) {
 
         var rsq = this.radius * this.radius;
         var mass = _Math.PI * rsq * this.height * this.density;
         var inertiaXZ = ( ( 0.25 * rsq ) + ( 0.0833 * this.height * this.height ) ) * mass;
         var inertiaY = 0.5 * rsq;
-        out.mass = mass;
-        out.inertia.set( inertiaXZ, 0, 0,  0, inertiaY, 0,  0, 0, inertiaXZ );
+        output.mass = mass;
+        output.inertia.set( inertiaXZ, 0, 0,  0, inertiaY, 0,  0, 0, inertiaXZ );
+    }
 
-    },
-
-    updateProxy: function () {
+    void updateProxy () {
 
         var te = this.rotation.elements;
         var len, wx, hy, dz, xx, yy, zz, w, h, d, p;
@@ -88,6 +89,4 @@ Cylinder.prototype = Object.assign( Object.create( Shape.prototype ), {
 
     }
 
-});
-
-export { Cylinder };
+}
