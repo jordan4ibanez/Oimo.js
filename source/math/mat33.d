@@ -4,13 +4,15 @@ import math.vec3;
 import math.math;
 import math.quat;
 
-struct Mat33 {
+class Mat33 {
 
     float[] elements = [
         1, 0, 0,
         0, 1, 0,
         0, 0, 1
     ];
+
+    this(){}
 
     this( float e00, float e01, float e02, float e10, float e11, float e12, float e20, float e21, float e22 ){
         this.elements = [
@@ -344,7 +346,7 @@ struct Mat33 {
 
     Mat33 clone () {
 
-        return Mat33().fromArray( this.elements, 0 );
+        return new Mat33().fromArray( this.elements, 0 );
 
     }
 

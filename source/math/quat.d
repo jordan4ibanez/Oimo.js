@@ -5,7 +5,7 @@ import math.vec3;
 import math.mat33;
 import math.aabb;
 
-struct Quat {
+class Quat {
 
     float x = 0;
     float y = 0;
@@ -16,6 +16,8 @@ struct Quat {
     float _y = 0;
     float _z = 0;
     float _w = 1;
+
+    this(){}
 
     this( float x, float y, float z, float w ){
         this.x = x || 0;
@@ -87,7 +89,7 @@ struct Quat {
 
     Quat setFromUnitVectors( Vec3 v1, Vec3 v2 ) {
 
-        Vec3 vx = Vec3();
+        Vec3 vx = new Vec3();
         float r = v1.dot( v2 ) + 1;
 
         if ( r < _Math.EPZ2 ) {
@@ -209,7 +211,7 @@ struct Quat {
 
     Quat clone( Quat q ){
 
-        return Quat( this.x, this.y, this.z, this.w );
+        return new Quat( this.x, this.y, this.z, this.w );
 
     }
 

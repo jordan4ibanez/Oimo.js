@@ -11,12 +11,14 @@ import math.vec3;
  * @author lo-th
  */
 
-struct AABB {
+class AABB {
 
     float[] elements = [
         0,0,0,
         0,0,0
     ];
+
+    this(){}
 
     this(float minX, float maxX, float minY, float maxY, float minZ, float maxZ ){
         this.elements[0] = minX || 0;
@@ -53,7 +55,7 @@ struct AABB {
 
 	AABB clone () {
 
-		return AABB().fromArray( this.elements );
+		return new AABB().fromArray( this.elements );
 
 	}
 

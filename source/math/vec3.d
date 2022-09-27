@@ -4,10 +4,12 @@ import math.math;
 import math.quat;
 import math.mat33;
 
-struct Vec3 {
+class Vec3 {
     float x = 0;
     float y = 0;
     float z = 0;
+
+    this(){}
 
     this( float x, float y, float z ) {
         this.x = x || 0;
@@ -322,7 +324,7 @@ struct Vec3 {
 
     Vec3 clone () {
 
-        return Vec3( this.x, this.y, this.z );
+        return new Vec3( this.x, this.y, this.z );
 
     }
 
