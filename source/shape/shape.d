@@ -38,7 +38,7 @@ class Shape {
     Shape next;
 
     // proxy of the shape used for broad-phase collision detection.
-    Proxy proxy;
+    BasicProxy proxy;
 
     // parent rigid body of the shape.
     RigidBody parent;
