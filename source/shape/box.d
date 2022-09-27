@@ -1,3 +1,5 @@
+module shape.box;
+
 import { SHAPE_BOX, AABB_PROX } from '../constants';
 import { Shape } from './Shape';
 import { Vec3 } from '../math/Vec3';
