@@ -1,7 +1,14 @@
+module constraint.joint.joint;
+
 import { JOINT_NULL } from '../../constants';
 import { Constraint } from '../Constraint';
 import { JointLink } from './JointLink';
 import { Vec3 } from '../../math/Vec3';
+
+
+import constants;
+import constraint.joint.joint_link;
+import math.vec3;
 
 /**
  * Joints are used to constrain the motion between two rigid bodies.

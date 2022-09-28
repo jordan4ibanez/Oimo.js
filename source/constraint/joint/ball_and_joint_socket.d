@@ -1,6 +1,10 @@
+module constraint.joint.ball_and_joint_socket;
+
 import { JOINT_BALL_AND_SOCKET } from '../../constants';
 import { Joint } from './Joint';
 import { LinearConstraint } from './base/LinearConstraint';
+
+import constants;
 
 /**
  * A ball-and-socket joint limits relative translation on two anchor points on rigid bodies.
@@ -9,6 +13,7 @@ import { LinearConstraint } from './base/LinearConstraint';
  * @author lo-th
  */
 
+public class BallAndSocketJoint {
 function BallAndSocketJoint ( config ){
 
     Joint.call( this, config );
@@ -19,11 +24,7 @@ function BallAndSocketJoint ( config ){
 
 };
 
-BallAndSocketJoint.prototype = Object.assign( Object.create( Joint.prototype ), {
-
-    constructor: BallAndSocketJoint,
-
-    preSolve: function ( timeStep, invTimeStep ) {
+    preSolve ( timeStep, invTimeStep ) {
 
         this.updateAnchorPoints();
 
@@ -33,16 +34,16 @@ BallAndSocketJoint.prototype = Object.assign( Object.create( Joint.prototype ), 
 
     },
 
-    solve: function () {
+    solve () {
 
         this.lc.solve();
 
     },
 
-    postSolve: function () {
+    postSolve () {
 
     }
 
-});
+}
 
 export { BallAndSocketJoint };
