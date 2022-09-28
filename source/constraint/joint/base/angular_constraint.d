@@ -1,45 +1,67 @@
-import { Vec3 } from '../../../math/Vec3';
-import { Quat } from '../../../math/Quat';
-import { Mat33 } from '../../../math/Mat33';
+module constraint.joint.base.angular_constraint;
+
+import math.vec3;
+import math.quat;
+import math.mat33;
 
 /**
 * An angular constraint for all axes for various joints.
 * @author saharan
 */
 
-function AngularConstraint( joint, targetOrientation ) {
+public class AngularConstraint {
+    Joint joint;
 
-    this.joint = joint;
+    Quat targetOrientation;
 
-    this.targetOrientation = new Quat().invert( targetOrientation );
+    Quat relativeOrientation;
 
-    this.relativeOrientation = new Quat();
+    Vec3 ii1 = null;
+    Vec3 ii2 = null;
+    Vec3 dd = null;
 
-    this.ii1 = null;
-    this.ii2 = null;
-    this.dd = null;
+    Vec3 vel;
+    Vec3 imp;
 
-    this.vel = new Vec3();
-    this.imp = new Vec3();
+    Vec3 rn0;
+    Vec3 rn1;
+    Vec3 rn2;
 
-    this.rn0 = new Vec3();
-    this.rn1 = new Vec3();
-    this.rn2 = new Vec3();
+    RigidBody b1;
+    RigidBody b2;
+    RigidBody a1;
+    RigidBody a2;
+    RigidBody i1;
+    RigidBody i2;
+    
+    this ( Joint joint, Quat targetOrientation ) {
 
-    this.b1 = joint.body1;
-    this.b2 = joint.body2;
-    this.a1 = this.b1.angularVelocity;
-    this.a2 = this.b2.angularVelocity;
-    this.i1 = this.b1.inverseInertia;
-    this.i2 = this.b2.inverseInertia;
+        this.joint = joint;
 
-};
+        this.targetOrientation = new Quat().invert( targetOrientation );
 
-Object.assign( AngularConstraint.prototype, {
+        this.relativeOrientation = new Quat();
 
-    AngularConstraint: true,
+        this.ii1 = null;
+        this.ii2 = null;
+        this.dd = null;
 
-    preSolve: function ( timeStep, invTimeStep ) {
+        this.vel = new Vec3();
+        this.imp = new Vec3();
+
+        this.rn0 = new Vec3();
+        this.rn1 = new Vec3();
+        this.rn2 = new Vec3();
+
+        this.b1 = joint.body1;
+        this.b2 = joint.body2;
+        this.a1 = this.b1.angularVelocity;
+        this.a2 = this.b2.angularVelocity;
+        this.i1 = this.b1.inverseInertia;
+        this.i2 = this.b2.inverseInertia;
+    }
+
+    void preSolve ( float timeStep, float invTimeStep ) {
 
         var inv, len, v;
 
@@ -75,9 +97,9 @@ Object.assign( AngularConstraint.prototype, {
         this.a1.add( this.rn1 );
         this.a2.sub( this.rn2 );
 
-    },
+    }
 
-    solve: function () {
+    void solve () {
 
         var r = this.a2.clone().sub( this.a1 ).sub( this.vel );
 
@@ -91,6 +113,4 @@ Object.assign( AngularConstraint.prototype, {
 
     }
 
-} );
-
-export { AngularConstraint };
+}
