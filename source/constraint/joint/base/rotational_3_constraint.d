@@ -116,7 +116,7 @@ public class Rotational3Constraint {
     float limitImpulse3=0;
     float motorImpulse3=0;
 
-    this( joint, limitMotor1, limitMotor2, limitMotor3 ) {
+    this( Joint joint, LimitMotor limitMotor1, LimitMotor limitMotor2, LimitMotor limitMotor3 ) {
     
         this.limitMotor1=limitMotor1;
         this.limitMotor2=limitMotor2;

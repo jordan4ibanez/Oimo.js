@@ -61,7 +61,7 @@ public class RotationalConstraint {
         
     }
 
-    void preSolve(timeStep,invTimeStep){
+    void preSolve(float timeStep, float invTimeStep){
         this.ax=this.limitMotor.axis.x;
         this.ay=this.limitMotor.axis.y;
         this.az=this.limitMotor.axis.z;
